@@ -1,0 +1,42 @@
+{
+  "name": "NoteOnMap",
+  "version": "0.0.1",
+  "description": "OleksandrKorniienko_WebDev2_Assignment1 NoteOnMap is a web application allowing users to create their own collections of notes and points on the map",
+  "license": "MIT",
+  "author": "OleksandrKorniienko",
+  "type": "module",
+
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/test.js",
+    "start": "node server.js",
+    "lint": "eslint . --ext .js",
+    "nd": "nodemon -e hbs,js server.js"
+  },
+  "dependencies": {
+    "@hapi/cookie": "^12.0.1",
+    "@hapi/hapi": "^21.4.4",
+    "@hapi/vision": "^7.0.3",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "handlebars": "^4.7.8",
+    "hapi": "^18.1.0",
+    "joi": "^18.0.2",
+    "mongoose": "^9.1.6",
+    "node": "^25.5.0",
+    "nodemon": "^3.1.11",
+    "requirejs": "^2.3.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "chai": "^6.2.2",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.2.0",
+    "mocha": "^11.7.5",
+    "typescript-eslint": "^8.54.0"
+  }
+}

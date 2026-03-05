@@ -1,0 +1,20 @@
+<form class="container pt-5 pb-5" style="max-width: 600px;" method="POST" action="/login/submit">
+  <div class="field">
+    <label class="label">Email or Username</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="e.g. alex@example.com" required name="emailOrUsername" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Password</label>
+    <div class="control">
+      <input class="input" type="password" placeholder="********" required name="password" />
+    </div>
+  </div>
+
+<div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+  <button class="button is-primary">Sign in</button>
+  <div class="div {{viewData.infoClass}}">{{viewData.infoMessage}}</div>
+</div>
+</form>

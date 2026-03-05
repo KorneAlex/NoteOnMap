@@ -1,0 +1,56 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      {{> svg/logo}}
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a href="/" class="navbar-item">
+        Home
+      </a>
+      {{#if viewData.isAuthenticated}}
+      <a href="/dashboard" class="navbar-item">
+        Dashboard
+      </a>
+      {{/if}}
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More
+        </a>
+
+        <div class="navbar-dropdown">
+          <a href="/about" class="navbar-item">
+            About
+          </a>
+          <hr class="navbar-divider">
+          {{!-- https://stackoverflow.com/questions/15551779/open-link-in-new-tab-or-window --}}
+          <a target="_blank" rel="noopener noreferrer"href="https://github.com/KorneAlex/NoteOnMap/issues" class="navbar-item">
+            Report an issue
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          {{#unless viewData.isAuthenticated}}
+          <a href="/signup" class="button is-primary">
+            <strong>Sign up {{viewData.username}}</strong>
+          </a>
+          <a href="/login" class="button is-light">
+            Log in
+          </a>
+          {{else}}
+          <a href="/logout" class="button is-light">
+            Log out
+          </a>
+          {{/unless}}
+          <a href="/test" class="button is-light">Test</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
