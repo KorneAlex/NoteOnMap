@@ -20,6 +20,7 @@ export const routes = [
     { method: 'POST', path: '/signup/submit', config: accountController.signupSubmit },
     { method: 'POST', path: '/login/submit', config: accountController.loginSubmit },
     { method: 'GET', path: '/logout', config: accountController.logout },
+    // { method: 'POST', path: '/user/addApiToAccount', config: accountController.loginSubmit },
     
     // test
     { method: 'GET', path: '/test', handler: testController.test, options: { auth: { mode: "try"} } },

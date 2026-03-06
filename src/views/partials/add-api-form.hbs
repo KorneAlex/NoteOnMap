@@ -1,0 +1,33 @@
+<div class="container pt-5 pb-5" style="max-width: 600px;">
+  <p>Current MapTiles API Key: MAP_API_KEY</p>
+  <form
+    class="container pt-5 pb-5"
+    style="max-width: 600px;"
+    method="POST"
+    action="/addApiToAccount"
+  >
+    <div>
+      <div class="field">
+        <input
+          class="input"
+          type="text"
+          placeholder="Please enter your API Key"
+          name="MAP_API_KEY"
+        />
+      </div>
+<div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+
+      <button class="button is-primary">Submit</button>
+    <p class="help">*your API Key will be stored in your account</p>
+</div>
+    </div>
+  </form>
+
+  <a
+    class="button is-light is-primary"
+    href="https://cloud.maptiler.com/account/keys/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >Get your MapTiles key here</a>
+
+</div>

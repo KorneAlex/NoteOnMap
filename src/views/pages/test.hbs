@@ -1,49 +1,7 @@
-{{> header }}
-<section class="hero">
-  <div class="hero-body">
-<h1 class="title">Test page</h1>
+<div style="text-align: center; margin-bottom: 2rem;">
+  <div class="title is-2 p-5">Hi, userName</div>
+  <p>Please add your API key to the account to see the map</p>
 </div>
-</section>
-
-<section>
-
-<form class="container pt-5 pb-5" method="POST" action="/test/submit">  
-
-<div class="field">
-        <label class="label">String</label>
-        <div class="control">
-            <input class="input" type="text" name="testInput" placeholder="string">
-        </div>
-    </div>
-<div class="field">
-        <label class="label">Number</label>
-        <div class="control">
-            <input class="input" type="text" name="testNumber" placeholder="number">
-        </div>
-    </div>
-<div class="field">
-        <label class="label">Email</label>
-        <div class="control">
-            <input class="input" type="text" name="testEmail" placeholder="email">
-        </div>
-    </div>
-
- <div class="field">
-        <div class="control">
-            <button type="submit" class="button is-primary">Check</button>
-        </div>
-    </div>
-
-</form>
-
-{{#if viewData.infoMessage}}
-<div class="notification {{viewData.infoClass}}">
-  {{viewData.infoMessage}}
-</div>
-{{/if}}
-
-</section>
 
 
-
-{{> footer }}
+{{> add-api-form }}

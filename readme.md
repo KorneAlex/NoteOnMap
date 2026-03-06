@@ -1,4 +1,4 @@
-# Map Notes
+# NoteOnMap
 
 A web application that allows users to create **collections of locations on a map**, attach **notes** and filter them to display a specific category.
 

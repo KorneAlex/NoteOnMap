@@ -56,7 +56,9 @@ export const accountController = {
       const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
       };
+
       if (request.auth.isAuthenticated) {
+
         return h.redirect("/dashboard");
       }
       return h.view("./pages/login", {

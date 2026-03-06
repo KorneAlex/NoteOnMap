@@ -1,0 +1,17 @@
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.css" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; left: 0; width: 100%; }
+  </style>
+  <div>
+  <div id="map"></div>
+  </div>
+
+  <script>
+      maptilersdk.config.apiKey = "{{viewData.mapsApiKey}}";
+      const map = new maptilersdk.Map({
+        container: 'map', // container's id or the HTML element to render the map
+        style: maptilersdk.MapStyle.STREETS,
+      });
+  </script>

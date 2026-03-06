@@ -20,6 +20,7 @@ export const mainController = {
   dashboard: (request, h) => {
     const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
+        mapsApiKey: "API"
     };
     return h.view("./pages/dashboard", { title: "Dashboard", viewData: viewData });
   },
