@@ -1,33 +1,39 @@
 <div class="container pt-5 pb-5" style="max-width: 600px;">
-  <p>Current MapTiles API Key: MAP_API_KEY</p>
   <form
     class="container pt-5 pb-5"
     style="max-width: 600px;"
     method="POST"
     action="/addApiToAccount"
   >
+  <p>Current MapTiles API Key: {{ viewData.mapsApiKey }}</p>
     <div>
       <div class="field">
         <input
           class="input"
           type="text"
-          placeholder="Please enter your API Key"
+          placeholder="Please add your API key to the account to see the map"
           name="MAP_API_KEY"
         />
       </div>
 <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+<div>
 
-      <button class="button is-primary">Submit</button>
-    <p class="help">*your API Key will be stored in your account</p>
-</div>
-    </div>
-  </form>
-
+      <button type="submit" class="button is-primary">Submit</button>
   <a
     class="button is-light is-primary"
     href="https://cloud.maptiler.com/account/keys/"
     target="_blank"
     rel="noopener noreferrer"
   >Get your MapTiles key here</a>
+</div>
+      {{#if viewData.infoMessage}}
+      <p class="help {{ viewData.infoClass }}">{{ viewData.infoMessage }}</p>
+      {{else}}
+    <p class="help">*your API Key will be stored in your account</p>
+      {{/if}}
+</div>
+    </div>
+  </form>
+
 
 </div>

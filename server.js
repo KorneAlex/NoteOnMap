@@ -74,6 +74,7 @@ const init = async () => {
       if (!account) {
         return { isValid: false };
       }
+      
       return { isValid: true, credentials: account };
     },
     redirectTo: "/login",

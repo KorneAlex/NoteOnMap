@@ -50,4 +50,15 @@ export const usersStore = {
     const result = await User.findByIdAndDelete(id);
     return result != null;
   },
+
+  async addApiKey(userId, key) {
+    await User.updateOne({ _id: userId }, { map_api_key: key });
+    const updatedUser = await this.getUserById(userId);
+    return updatedUser;
+  },
+
+  async getApiKeyByUserId(userId) {
+    const user = await this.getUserById(userId);
+    return user.map_api_key;
+  }
 };
