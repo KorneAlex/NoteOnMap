@@ -27,6 +27,7 @@
     "hapi": "^18.1.0",
     "joi": "^18.0.2",
     "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
     "mongoose": "^9.1.6",
     "node": "^25.5.0",
     "nodemon": "^3.1.11",
