@@ -20,9 +20,11 @@ export const mainController = {
   },
 
   async dashboard(request, h) {
+    const points = await db.pointsStore.getAllPointsForUserId(request.auth.credentials.username); // passing points for the current user from the server side to the client side
     const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
-        cookie: request.auth.credentials,
+        userId: request.auth.credentials._id,
+        pointsJson: JSON.stringify(points), // convertting the data to JSON format so the client can work with it
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id)
     };
     return h.view("./pages/dashboard", { title: "Dashboard", viewData: viewData });
