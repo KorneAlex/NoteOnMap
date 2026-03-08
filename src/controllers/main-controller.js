@@ -35,7 +35,6 @@ export const mainController = {
         isAuthenticated: request.auth.isAuthenticated,
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id),
         username: request.auth.credentials.username,
-        all: request.auth.credentials._id,
     };
     if (request.query.info === "success") {
       viewData.infoMessage = "API key saved successfully!";

@@ -27,6 +27,7 @@ export const usersStore = {
       username: input.username,
       email: input.email,
       password: input.password,
+      points: [],
     });
     await newUser.save();
     return newUser.toObject();

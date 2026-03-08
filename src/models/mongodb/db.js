@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   map_api_key: { type: String, required: false },
+  points: { type: Array, required: false },
 });
 
 const pointSchema = new mongoose.Schema({
