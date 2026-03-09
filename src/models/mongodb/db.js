@@ -15,10 +15,19 @@ const userSchema = new mongoose.Schema({
 });
 
 const pointSchema = new mongoose.Schema({
-  pos_lat: { type: String, required: true },
-  pos_lon: { type: String, required: true },
-  data_name: { type: String, required: true },
-  data_description: { type: String, required: false },
+  owner: { type: String, required: true },
+      time: {
+        created: { type: String, required: true },
+      },
+  pos: {
+    lat: { type: String, required: true },
+    lon: { type: String, required: true },
+  },
+  data: {
+    name: { type: String, required: true },
+    description: { type: String, required: false },
+    categories: { type: [String], default: [] }, // array of strings (AI help)
+  },
 });
 
 // TODO: Categories

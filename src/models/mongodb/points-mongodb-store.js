@@ -4,23 +4,23 @@ import { User } from "./db.js";
 export const pointsStore = {
   async getAllPoints() {
     const arr = await Point.find().lean();
-    console.log(arr);
+    // console.log(arr);
     return arr;
   },
 
   /**
-   * Gets points for the user by username.
+   * Gets points for the user by user id.
    * Returns only the points data for the matching user.
    *
    * Args:
-   *   userName: The username used to look up the user's points.
+   *   uid: The user id used to look up the user's points.
    *
    * Returns:
    *   An array of points accessable for the specified user.
    */
-  async getAllPointsForUserId(userName) {
+  async getAllPointsForUserId(uid) {
     const arr = await User.findOne(
-      { username: userName },
+      { _id: uid },
       { points: 1, _id: 0 }, // projection. return points without _id
     ).lean(); // get normal js object
     const points = arr['points'];
@@ -28,7 +28,7 @@ export const pointsStore = {
     for (let pointId of points) {
         let pointData = await this.getPointDataById(pointId)
         pointsData.push(pointData)
-        console.log(pointData);
+        // console.log(pointData);
     }
 
     return pointsData;
@@ -36,5 +36,17 @@ export const pointsStore = {
 
   async getPointDataById(id) {
     return await Point.findOne({"_id": `${id}`}).lean();
+  },
+
+  async addPoint(pointData) {
+    const newPoint = new Point(pointData);
+    await newPoint.save();
+    const user = await this.getUserById(pointData.owner);
+    user.points.push(newPoint._id.toString());
+    await user.save();
+  },
+
+  async getUserById(uid) {
+    return await User.findOne({"_id": `${uid}`});
   }
 };

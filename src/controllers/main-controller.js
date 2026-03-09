@@ -20,11 +20,12 @@ export const mainController = {
   },
 
   async dashboard(request, h) {
-    const points = await db.pointsStore.getAllPointsForUserId(request.auth.credentials.username); // passing points for the current user from the server side to the client side
+    const points = await db.pointsStore.getAllPointsForUserId(request.auth.credentials._id); // passing points for the current user from the server side to the client side
     const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
         userId: request.auth.credentials._id,
         pointsJson: JSON.stringify(points), // convertting the data to JSON format so the client can work with it
+        // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id)
     };
     return h.view("./pages/dashboard", { title: "Dashboard", viewData: viewData });
@@ -33,7 +34,8 @@ export const mainController = {
   async account(request, h) {
     const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
-        mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id),
+        // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
+        mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id), 
         username: request.auth.credentials.username,
     };
     if (request.query.info === "success") {

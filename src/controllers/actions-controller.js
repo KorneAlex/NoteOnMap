@@ -15,4 +15,31 @@ export const actionsController = {
       return h.redirect("/account?info=success");
     },
   },
+
+  addPoint: {
+    handler: async (request, h) => {
+
+      const pointData = {
+      owner: request.auth.credentials._id,
+      time: {
+        created: new Date(),
+      },
+      pos: { 
+        lat: request.payload.lat,
+        lon: request.payload.lon,
+      },
+      data: {
+        name: request.payload.name,
+        description: request.payload.description,
+        categories: request.payload.categories // this will be a personal category name for user to be able to filter points on map by category
+      },
+      }
+
+      // console.log(pointData);
+
+      await db.pointsStore.addPoint(pointData);
+
+      return h.redirect("/dashboard");
+    }
+  }
 };

@@ -26,7 +26,7 @@
     (async () => {
       const points = {{{ viewData.pointsJson }}};
       for (let i = 0; i < points.length; i++) {
-        {{!-- console.log(points[i]); --}}
+        console.log(points[i]);
         const p = points[i];
         const title = p.data.name;
         const description = p.data.description;
@@ -34,7 +34,7 @@
         const popupContent = `
                                 <p><strong style="color: black">${title}</strong></p>
                                 <p>${description}</p>
-                                <p>added on ${p.data.time.created}</p>
+                                <p>added on ${p.time.created}</p>
                                 `
         marker.bindPopup(popupContent);
         markers.addLayer(marker);
