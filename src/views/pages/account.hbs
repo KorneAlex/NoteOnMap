@@ -1,7 +1,10 @@
 {{> header }}
 <div style="text-align: center; margin-bottom: 2rem;">
-  <div class="title is-2 p-5">Hi, {{viewData.username}}</div>
+  <div class="title is-2 p-5"><span>Hi, {{viewData.username}} [{{{viewData.userIsAdmin}}}]</span></div>
 </div>
-
+{{#if viewData.userIsAdmin }}
 {{> add-api-form }}
+{{else }}
+{{> add-api-form }}
+{{/if }}
 {{> footer }}

@@ -24,6 +24,7 @@ export const mainController = {
     const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
         userId: request.auth.credentials._id,
+        userIsAdmin: await db.usersStore.userIsAdmin(request.auth.credentials._id),
         pointsJson: JSON.stringify(points), // convertting the data to JSON format so the client can work with it
         // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id)
@@ -34,6 +35,7 @@ export const mainController = {
   async account(request, h) {
     const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
+        userIsAdmin: await db.usersStore.userIsAdmin(request.auth.credentials._id),
         // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id), 
         username: request.auth.credentials.username,

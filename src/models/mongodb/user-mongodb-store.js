@@ -61,5 +61,12 @@ export const usersStore = {
   async getApiKeyByUserId(userId) {
     const user = await this.getUserById(userId);
     return user.map_api_key;
+  },
+
+  async userIsAdmin(uid) {
+    const isAdmin = await User.findOne(
+      { _id: uid },
+      { isAdmin: 1, _id: 0 },).lean();
+    return isAdmin['isAdmin'];
   }
 };

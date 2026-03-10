@@ -1,14 +1,13 @@
-{{> header }}
+{{!-- {{> header }} --}}
+{{> left-pane }}
+{{> account-menu }}
   <section style="z-index: 0;">
     {{#if viewData.mapsApiKey }}
-    <div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center" style="position: relative; height: 80vh;">
-    {{> map/map }}
-    {{!-- {{> map/map_tst }} --}}
-    </div>
-    {{> map/add-point }}
-    <div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center" style="position: relative;">
-      <button class="button is-primary" style="width: 200px;">Add point</button>
-    </div>
+    {{!-- <div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center" style="position: relative; height: 80vh;"> --}}
+    {{!-- {{> map/map }} --}}
+    {{> map/tst }}
+    {{!-- </div> --}}
+    {{!-- {{> map/add-point }} --}}
     {{else}}
       {{> api-key-warning }}
     {{/if}}
