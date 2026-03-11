@@ -48,7 +48,7 @@ export const usersStore = {
   },
 
   async deleteUserById(id) {
-    const result = await User.findByIdAndDelete(id);
+    const result = await User.findOneAndDelete({"_id":id});
     return result != null;
   },
 

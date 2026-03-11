@@ -6,21 +6,23 @@ import { pointsStore } from "../src/models/mongodb/points-mongodb-store.js";
 import { testData as td } from "../test/data-for-tests.js";
 
 export const mongodbTests = M.suite("MongoDB Tests", () => {
-  M.beforeEach(async () => {
+  M.before(async () => {
     await db.init();
   });
   // Users
   M.describe("Users Collection", () => {
-    M.afterEach(async () => {
-      const user = await usersStore.getUserByEmail(td[0].testUser.email);
-      if (user) {
-        await usersStore.deleteUserById(user._id);
+    M.beforeEach(async () => {
+      const user = await db.usersStore.getUserByEmail(td[0].testUser.email);
+      if (user !== null) {
+        console.log(user);
+        const res = await db.usersStore.deleteUserById(user._id.toString());
+        console.log("user already exist");
+        console.log("user deleted:", res);
       }
     });
 
     M.it("1. should create a new user", async () => {
       const newUser = await usersStore.addUser(td[0].testUser);
-      assert.isNotNull(newUser._id, "User ID should not be null");
       assert.equal(newUser.username, td[0].testUser.username);
       assert.equal(newUser.email, td[0].testUser.email);
       assert.equal(newUser.password, td[0].testUser.password);
@@ -34,27 +36,40 @@ export const mongodbTests = M.suite("MongoDB Tests", () => {
       assert.equal(user.email, td[0].testUser.email);
     });
 
-    M.it("3. delete a user by email", async () => {
-      const user = await usersStore.getUserByEmail(td[0].testUser.email);
-      if (user) {
-        await usersStore.deleteUserById(user._id);
-      }
-    });
+    M.it("3. delete a user by email", async () => {});
   });
+
+  M.after(async () => {
+    const user = await db.usersStore.getUserByEmail(td[0].testUser.email);
+
+    if (user !== null) {
+      const res = await db.usersStore.deleteUserById(user._id.toString());
+      console.log("cleanup: user deleted", res);
+    }
+
+    await db.close();
+  });
+
   // Points
   M.describe("Points collection", () => {
+    M.beforeEach(async () => {
+      const user = await db.usersStore.getUserByEmail(td[0].testUser.email);
+      if (user !== null) {
+        console.log(user);
+        const res = await db.usersStore.deleteUserById(user._id.toString());
+        console.log("user already exist");
+        console.log("user deleted:", res);
+      }
+    });
+
     M.it("1. Create point with correct data", async () => {
       const newUser = await usersStore.addUser(td[0].testUser);
-      const uid = newUser["_id"].toString();
-      // console.log("newUser:", newUser['_id'].toString());
-      // console.log("uid:", uid);
+      let uid = newUser["_id"].toString();
       const pointData = {
         ...td[0].testPointCorrect1,
         owner: uid,
       };
-      // console.log("pointData:", pointData);
       const newPoint = await pointsStore.addPoint(pointData);
-      // console.log("newPoint: ", newPoint);
       assert.isNotNull(newPoint["_id"], "Point ID should not be null");
       assert.isNotNull(
         newPoint.time.created,
@@ -67,8 +82,33 @@ export const mongodbTests = M.suite("MongoDB Tests", () => {
       assert.strictEqual(newPoint.pos.lon, pointData.pos.lon);
     });
     M.it("2. Edit point", () => {});
-    M.it("3. Get point", () => {});
-    M.it("4. Delete point", () => {});
-    M.it("5. Create a point with unacceptible info", () => {});
+    M.it("3. Get points for testUser", async () => {
+      const newUser = await usersStore.addUser(td[0].testUser);
+      let uid = newUser["_id"].toString();
+      const pointData1 = {
+        ...td[0].testPointCorrect1,
+        owner: uid,
+      };
+      const pointData2 = {
+        ...td[0].testPointCorrect2,
+        owner: uid,
+      };
+      const newPoint1 = await pointsStore.addPoint(pointData1);
+      const newPoint2 = await pointsStore.addPoint(pointData2);
+      const points = await db.pointsStore.getAllPointsForUserId(uid);
+      assert.strictEqual(newPoint1._id.toString(), points[0]._id.toString());
+      assert.strictEqual(newPoint2._id.toString(), points[1]._id.toString());
+    });
+    //   M.it("4. Delete point", () => {});
+    //   M.it("5. Create a point with unacceptible info", () => {});
+    // });
+    M.after(async () => {
+      const user = await db.usersStore.getUserByEmail(td[0].testUser.email);
+
+      if (user !== null) {
+        const res = await db.usersStore.deleteUserById(user._id.toString());
+        console.log("cleanup: user deleted", res);
+      }
+    });
   });
 });

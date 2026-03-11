@@ -4,6 +4,7 @@ export const testData = [{
       username: "DevTest",
       email: "user1@test1.com",
       password: "123123",
+      
     },
   // Points
     testPointCorrect1 : {
