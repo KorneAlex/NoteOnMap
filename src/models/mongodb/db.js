@@ -16,12 +16,12 @@ const userSchema = new mongoose.Schema({
 
 const pointSchema = new mongoose.Schema({
   owner: { type: String, required: true },
-      time: {
-        created: { type: String, required: true },
-      },
+  time: {
+    created: { type: String, required: true },
+  },
   pos: {
-    lat: { type: String, required: true },
-    lon: { type: String, required: true },
+    lat: { type: Number, required: true },
+    lon: { type: Number, required: true },
   },
   data: {
     name: { type: String, required: true },

@@ -44,6 +44,7 @@ export const pointsStore = {
     const user = await this.getUserById(pointData.owner);
     user.points.push(newPoint._id.toString());
     await user.save();
+    return newPoint;
   },
 
   async getUserById(uid) {
