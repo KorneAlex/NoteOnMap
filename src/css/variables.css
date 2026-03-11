@@ -1,0 +1,11 @@
+:root {
+  --bulma-primary-h: 176deg;
+  --bulma-primary-l: 53%;
+  --bulma-success-h: 176deg;
+  --bulma-success-s: 100%;
+}
+
+:root a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}

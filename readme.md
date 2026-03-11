@@ -8,6 +8,9 @@ Users can create collections, add markers to specific coordinates, and attach de
 
 The starting version has been copied and modified fom my test project that was created to practice lab contents from our lectures from WebDev2 please see it here: https://github.com/KorneAlex/webdev2
 
+AI has been used for the UI to deal with CSS and animations. Almost never for the functions. When ever AI used for the backend you can find a comment about it.
+Any other issue is solved with [stackoverflow](https://stackoverflow.com/), [geeksfor](https://www.geeksforgeeks.org/) and tools documentation.
+
 ---
 
 ## Features

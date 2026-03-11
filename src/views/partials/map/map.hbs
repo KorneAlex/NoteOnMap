@@ -1,44 +1,50 @@
-{{!-- https://docs.maptiler.com/leaflet/examples/cluster/ --}}
+{{!-- https://docs.maptiler.com/sdk-js/examples/popup-on-click/ --}}
+{{!-- https://docs.maptiler.com/sdk-js/examples/popup-on-hover/ --}}
+<script src="https://unpkg.com/deck.gl@9.2.5/dist.min.js"></script>
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.umd.min.js"></script>
+<link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.css" rel="stylesheet" />
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.umd.min.js"></script>
-  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.css" rel="stylesheet" />
-  <script src="https://cdn.maptiler.com/leaflet-maptilersdk/v4.1.0/leaflet-maptilersdk.umd.min.js"></script>
-  <!-- Leaflet.MarkerCluster -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js'></script>
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css' rel='stylesheet' />
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css' rel='stylesheet' />
-  <style>#map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}</style>
+<div id="map"></div>
 
-	<div id="map"></div>
+<script type="text/javascript">
+  const mapId = "streets-v4";
+  maptilersdk.config.apiKey = '{{viewData.mapsApiKey}}';
 
 
-	<script>
-    const key = "{{viewData.mapsApiKey}}";
-    const map = new L.Map('map', {maxZoom: 22}).setView([53.5, -8],7);
-    const mtLayer = L.maptiler.maptilerLayer({
-      style: L.maptiler.MapStyle.DATAVIZ.LIGHT,
-      apiKey: key,
-    }).addTo(map);
-    const markers = L.markerClusterGroup();
+    const map = new maptilersdk.Map({
+        container: 'map',
+        style: maptilersdk.MapStyle.STREETS,
+        center: [-7, 54],
+        zoom: 6,
+    });
 
-    (async () => {
-      const points = {{{ viewData.pointsJson }}};
-      for (let i = 0; i < points.length; i++) {
-        console.log(points[i]);
-        const p = points[i];
-        const title = p.data.name;
-        const description = p.data.description;
-        const marker = L.marker(new L.LatLng(p.pos.lat, p.pos.lon),{ title: title }, { description: description });
-        const popupContent = `
-                                <p><strong style="color: black">${title}</strong></p>
-                                <p>${description}</p>
-                                <p>added on ${p.time.created}</p>
-                                `
-        marker.bindPopup(popupContent);
-        markers.addLayer(marker);
-      }
-      map.addLayer(markers);
-    })();
-	</script>
+  
+    const points = {{{viewData.pointsJson}}};
+    console.log(points);
+    let counter = 0;
+    for (const point of points) {
+        const coordinates = [point.pos["lon"], point.pos["lat"]]
+    // create the popup
+        console.log(point.data.description);
+    const popup = new maptilersdk.Popup({ offset: 25 }).setHTML(
+        `<strong class="is-size-5"><a href="/">${point.data.name}</a></strong><p>${point.data.description}</p>`
+    );
+
+
+    // create DOM element for the marker
+    const el = document.createElement('div');
+    el.id = 'marker' + counter;
+    el.classList.add('marker');
+    // create the marker
+    new maptilersdk.Marker({element: el})
+        .setLngLat(coordinates)
+        .setPopup(popup) // sets a popup on this marker
+        .addTo(map);
+    counter++;
+    }
+</script>

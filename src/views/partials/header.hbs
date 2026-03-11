@@ -31,26 +31,7 @@
     </div>
 
     <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          {{#unless viewData.isAuthenticated}}
-          <a href="/signup" class="button is-primary">
-            <strong>Sign up {{viewData.username}}</strong>
-          </a>
-          <a href="/login" class="button is-light">
-            Log in
-          </a>
-          {{else}}
-          <a href="/account" class="button is-light">
-            Account
-          </a>
-          <a href="/logout" class="button is-light">
-            Log out
-          </a>
-          {{/unless}}
-          <a href="/test" class="button is-light">Test</a>
-        </div>
+      {{> account-menu}}
       </div>
     </div>
-  </div>
 </nav>

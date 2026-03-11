@@ -29,7 +29,7 @@ export const mainController = {
         // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id)
     };
-    return h.view("./pages/dashboard", { title: "Dashboard", viewData: viewData });
+    return h.view("./pages/dashboard", { title: "Dashboard", isDashboard: true, viewData: viewData });
   },
 
   async account(request, h) {

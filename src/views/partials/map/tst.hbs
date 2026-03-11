@@ -1,106 +1,48 @@
 {{!-- https://docs.maptiler.com/sdk-js/examples/popup-on-click/ --}}
 {{!-- https://docs.maptiler.com/sdk-js/examples/popup-on-hover/ --}}
-  <script src="https://unpkg.com/deck.gl@9.2.5/dist.min.js"></script>
-  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.umd.min.js"></script>
-  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
+<script src="https://unpkg.com/deck.gl@9.2.5/dist.min.js"></script>
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.umd.min.js"></script>
+<link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.css" rel="stylesheet" />
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
 
-    #map {
-      height: 100vh;
-      width: 100vw;
-    }
-  </style>
-
-  <div id="map"></div>
-
+<div id="map"></div>
 
 <script type="text/javascript">
   const mapId = "streets-v4";
   maptilersdk.config.apiKey = '{{viewData.mapsApiKey}}';
 
-  const map = new maptilersdk.Map({
-    container: 'map', // container id
-    style: "streets-v4", // style URL
-    center: [-8.5, 53.5], // starting position [lng, lat]
-    zoom: 7, // starting zoom
-    pitch: 0
-  });
 
-
-
-
-       map.on('load', async function () {
-
-          const image = await map.loadImage(
-            'https://docs.maptiler.com/sdk-js/assets/custom_marker.png');
-
-        map.addImage('custom-marker', image.data);
-
-        map.addSource('places', {
-            'type': 'geojson',
-            'data': {
-                'type': 'FeatureCollection',
-                'features': [
-                    {
-                        'type': 'Point',
-                        'properties': {
-                            'description':
-                                '<strong>Truckeroo</strong><p><a href="http://www.truckeroodc.com/www/" target="_blank">Truckeroo</a> brings dozens of food trucks, live music, and games to half and M Street SE (across from Navy Yard Metro Station) today from 11:00 a.m. to 11:00 p.m.</p>',
-                            'icon': 'music'
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-12, 53.5]
-                        }
-                    }
-                ]
-            }
-        });
-        // Add a layer showing the places.
-        map.addLayer({
-            'id': 'places',
-            'type': 'symbol',
-            'source': 'places',
-            'layout': {
-                'icon-image': 'custom-marker',
-                'icon-overlap': 'always'
-            }
-        });
-
-        // When a click event occurs on a feature in the places layer, open a popup at the
-        // location of the feature, with description HTML from its properties.
-        map.on('click', 'places', function (e) {
-            const coordinates = e.features[0].geometry.coordinates.slice();
-            const description = e.features[0].properties.description;
-
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-            }
-
-            new maptilersdk.Popup()
-                .setLngLat(coordinates)
-                .setHTML(description)
-                .addTo(map);
-        });
-
-        // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on('mouseenter', 'places', function () {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'places', function () {
-            map.getCanvas().style.cursor = '';
-        });
+    const map = new maptilersdk.Map({
+        container: 'map',
+        style: maptilersdk.MapStyle.STREETS,
+        center: [-7, 54],
+        zoom: 6
     });
+    const points = {{{viewData.pointsJson}}};
+    console.log(points);
+    let counter = 0;
+    for (const point of points) {
+        const coordinates = [point.pos["lon"], point.pos["lat"]]
+    // create the popup
+        console.log(point.data.description);
+    const popup = new maptilersdk.Popup({ offset: 25 }).setHTML(
+        `<strong class="is-size-5"><a href="/">${point.data.name}</a></strong><p>${point.data.description}</p>`
+    );
 
+
+    // create DOM element for the marker
+    const el = document.createElement('div');
+    el.id = 'marker' + counter;
+    el.classList.add('marker');
+    // create the marker
+    new maptilersdk.Marker({element: el})
+        .setLngLat(coordinates)
+        .setPopup(popup) // sets a popup on this marker
+        .addTo(map);
+    counter++;
+    }
 </script>

@@ -1,8 +1,25 @@
-<div
-  class="container"
-  style="position: absolute; right: 1rem; top: 1rem; border-radius: 10rem; height: 3rem; width: 3rem; background-color: var(--bulma-body-background-color); z-index: 1001;"
->
-<div class="p-2">
-{{> svg/user-icon }}
+<div class="account-icon-bg p-2">
+   {{> svg/user-icon }}
 </div>
+<div class="account-menu-wrapper">
+    {{#unless viewData.isAuthenticated}}
+    <div class="account-menu container is-flex">
+    <a href="/signup" class="navbar-item">
+      <strong>Sign up</strong>
+    </a>
+    <a href="/login" class="navbar-item">
+      Log in
+    </a>
+    {{else}}
+  <div class="account-menu container is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+    <a href="/account" class="navbar-item">
+      Account
+    </a>
+    <a href="/logout" class="navbar-item">
+      Log out
+    </a>
+    {{/unless}}
+  </div>
+  <div class="account-icon container is-flex is-justify-content-center is-align-items-center">
+  </div>
 </div>

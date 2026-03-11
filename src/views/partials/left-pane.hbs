@@ -1,57 +1,123 @@
-<div class="container"
-     style="
-      position: absolute;
-      width: 280px;
-      height: 100vh;
-      background-color: var(--bulma-body-background-color);
-      border-top-right-radius: 0.75rem;
-      border-bottom-right-radius: 0.75rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-      padding: 1rem;
-      overflow-y: auto;
-      z-index: 1000;
-    ">
-<nav class="navbar is-flex is-flex-direction-column" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="/">
-      {{> svg/logo}}
-    </a>
-  </div>
-
-
+<div class="left-pane-wrapper" id="left-pane-wrapper">
+  <button
+    type="button"
+    class="left-pane__logo-trigger"
+    aria-label="Open menu"
+    aria-expanded="false"
+    aria-controls="left-pane"
+    id="left-pane-logo-trigger"
+    data-left-pane-toggle
+  >
+    {{> svg/logo}}
+  </button>
+  <aside class="left-pane" id="left-pane" role="navigation" aria-label="Main menu">
+    <nav class="left-pane__nav">
+      <ul class="left-pane__menu">
       {{#if viewData.isAuthenticated}}
-      <a href="/dashboard" class="navbar-item">
-        Dashboard
-      </a>
+        <li>
+          <a href="/dashboard">Dashboard</a>
+        </li>
       {{/if}}
-        <a class="navbar-link">
+
+      <li class="left-pane__dropdown">
+        <button
+          type="button"
+          class="left-pane__trigger"
+          aria-expanded="false"
+          aria-controls="left-pane-more-menu"
+          id="left-pane-more-trigger"
+          data-dropdown-trigger
+        >
           More
-        </a>
-
-          <a href="/about" class="navbar-item">
-            About
-          </a>
-          {{!-- https://stackoverflow.com/questions/15551779/open-link-in-new-tab-or-window --}}
-          <a target="_blank" rel="noopener noreferrer"href="https://github.com/KorneAlex/NoteOnMap/issues" class="navbar-item">
-            Report an issue
-          </a>
-
-
-          {{#unless viewData.isAuthenticated}}
-          <a href="/signup" class="navbar-item">
-            <strong>Sign up {{viewData.username}}</strong>
-          </a>
-          <a href="/login" class="navbar-item">
-            Log in+
-          </a>
-          {{else}}
-          <a href="/account" class="navbar-item">
-            Account
-          </a>
-          <a href="/logout" class="navbar-item">
-            Log out
-          </a>
-          {{/unless}}
-          <a href="/test" class="navbar-item">Test</a>
-          </nav>
+        </button>
+        <ul
+          id="left-pane-more-menu"
+          class="left-pane__dropdown-menu"
+          role="menu"
+          aria-labelledby="left-pane-more-trigger"
+        >
+          <li role="none"><a href="/about" role="menuitem">About</a></li>
+          <li role="separator" class="left-pane__dropdown-divider"></li>
+          <li role="none">
+            <a href="https://github.com/KorneAlex/NoteOnMap/issues" target="_blank" rel="noopener noreferrer" role="menuitem">Report an issue</a>
+          </li>
+          <li role="none"><a href="/test" role="menuitem">Test</a></li>
+        </ul>
+      </li>
+    </ul>
+    </nav>
+</aside>
 </div>
+
+<script>
+(function () {
+  var wrapper = document.getElementById('left-pane-wrapper');
+  var pane = document.querySelector('.left-pane');
+  var logoTrigger = document.querySelector('[data-left-pane-toggle]');
+  var dropdownTrigger = pane && pane.querySelector('[data-dropdown-trigger]');
+  var dropdownMenu = dropdownTrigger && pane.querySelector('#' + (dropdownTrigger.getAttribute('aria-controls') || ''));
+
+  if (!wrapper || !pane || !logoTrigger) return;
+
+  function openPane() {
+    wrapper.classList.add('is-open');
+    logoTrigger.setAttribute('aria-expanded', 'true');
+    logoTrigger.setAttribute('aria-label', 'Close menu');
+  }
+
+  function closePane() {
+    wrapper.classList.remove('is-open');
+    logoTrigger.setAttribute('aria-expanded', 'false');
+    logoTrigger.setAttribute('aria-label', 'Open menu');
+    if (dropdownTrigger && dropdownMenu) {
+      dropdownTrigger.setAttribute('aria-expanded', 'false');
+      dropdownMenu.removeAttribute('data-open');
+      dropdownMenu.setAttribute('hidden', '');
+    }
+  }
+
+  function togglePane() {
+    if (wrapper.classList.contains('is-open')) closePane();
+    else openPane();
+  }
+
+  logoTrigger.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    togglePane();
+  });
+
+  document.addEventListener('click', function (e) {
+    if (wrapper.classList.contains('is-open') && !wrapper.contains(e.target)) {
+      closePane();
+    }
+  });
+
+  if (dropdownTrigger && dropdownMenu) {
+    function openDropdown() {
+      dropdownTrigger.setAttribute('aria-expanded', 'true');
+      dropdownMenu.setAttribute('data-open', '');
+      dropdownMenu.removeAttribute('hidden');
+    }
+    function closeDropdown() {
+      dropdownTrigger.setAttribute('aria-expanded', 'false');
+      dropdownMenu.removeAttribute('data-open');
+      dropdownMenu.setAttribute('hidden', '');
+    }
+    function toggleDropdown() {
+      if (dropdownTrigger.getAttribute('aria-expanded') === 'true') closeDropdown();
+      else openDropdown();
+    }
+    dropdownTrigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleDropdown();
+    });
+    document.addEventListener('click', function (e) {
+      if (dropdownTrigger.getAttribute('aria-expanded') === 'true' && !pane.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+  }
+})();
+</script>

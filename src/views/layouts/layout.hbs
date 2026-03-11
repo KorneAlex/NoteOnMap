@@ -5,19 +5,21 @@
   <title>{{title}}</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
   <link href='https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.css' rel='stylesheet' />
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/left-pane.css">
+  <link rel="stylesheet" href="/css/account-menu.css">
+  <link rel="stylesheet" href="/css/map.css">
 </head>
 
 <body>
-  {{!-- <div class="section is-flex is-flex-direction-column p-0" style="margin-left: 15%; margin-right: 15%; height: 100vh;"> --}}
+  {{#if isDashboard}}
   {{{content}}}
-  {{!-- </div> --}}
+  {{else}}
+  <div class="is-flex is-flex-direction-column p-0" style="margin-left: 15%; margin-right: 15%; min-height: 100vh;">
+  {{> header }}
+  {{{content}}}
+  {{> footer }}
+  </div>
+  {{/if}}
 </body>
-<style>
-:root {
-  --bulma-primary-h: 176deg;
-  --bulma-primary-l: 53%;
-  --bulma-success-h: 176deg;
-  --bulma-success-s: 100%;
-}
-</style>
 </html>

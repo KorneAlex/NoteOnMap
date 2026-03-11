@@ -6,6 +6,7 @@ import Cookie from "@hapi/cookie";
 import Vision from "@hapi/vision";
 import dotenv from "dotenv";
 import path from "path";
+import fs from "fs";
 
 // my modules
 import { routes } from "./routes.js";
@@ -84,6 +85,44 @@ const init = async () => {
 
   server.route(routes);
 
+  // added by AI during CSS refactoring
+  server.route({
+    method: "GET",
+    path: "/css/{file}.css",
+    handler: async (request, h) => {
+      const file = request.params.file;
+      if (!/^[a-z0-9-]+$/i.test(file)) {
+        return h.response().code(404);
+      }
+      const filePath = path.join(__dirname, "src", "css", file + ".css");
+      try {
+        const content = await fs.promises.readFile(filePath, "utf8");
+        return h.response(content).type("text/css");
+      } catch {
+        return h.response().code(404);
+      }
+    },
+  });
+
+  // AI. I could not find how to add my image for points
+  server.route({
+    method: "GET",
+    path: "/src/views/partials/svg/{file}",
+    handler: async (request, h) => {
+      const file = request.params.file;
+      if (!/^[a-z0-9.-]+$/i.test(file)) {
+        return h.response().code(404);
+      }
+      const filePath = path.join(__dirname, "src", "views", "partials", "svg", file);
+      try {
+        const content = await fs.promises.readFile(filePath);
+        const type = file.endsWith(".png") ? "image/png" : file.endsWith(".jpg") || file.endsWith(".jpeg") ? "image/jpeg" : "application/octet-stream";
+        return h.response(content).type(type);
+      } catch {
+        return h.response().code(404);
+      }
+    },
+  });
   await server.start();
   console.log("Server running on %s", server.info.uri);
 };
