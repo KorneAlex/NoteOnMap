@@ -39,7 +39,6 @@ export const mainController = {
         // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id), 
         username: request.auth.credentials.username,
-        test: await db.pointsStore.deletePointsByCategory("DevTest"),
         };
     if (request.query.info === "success") {
       viewData.infoMessage = "API key saved successfully!";
