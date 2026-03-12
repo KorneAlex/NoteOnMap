@@ -1,4 +1,5 @@
 import { db } from "../models/db.js";
+import { pointSchema } from "../models/joi-schema.js";
 
 export const actionsController = {
   addApiKey: {
@@ -17,13 +18,23 @@ export const actionsController = {
   },
 
   addPoint: {
+    validate: {
+      payload: pointSchema,
+      failAction: (request, h, err) => {
+        const viewData = {
+          isAuthenticated: request.auth.isAuthenticated,
+          infoMessage: err.details[0].message,
+          infoClass: "has-text-danger",
+        };
+        return h
+          .view("./dashboard", { title: "Dashboard", viewData })
+          .takeover();
+      },
+    },
     handler: async (request, h) => {
 
       const pointData = {
       owner: request.auth.credentials._id,
-      time: {
-        created: new Date(),
-      },
       pos: { 
         lat: request.payload.lat,
         lon: request.payload.lon,
