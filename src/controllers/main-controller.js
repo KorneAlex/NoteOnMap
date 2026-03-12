@@ -33,13 +33,20 @@ export const mainController = {
   },
 
   async account(request, h) {
+    const isAdmin = await db.usersStore.userIsAdmin(request.auth.credentials._id);
+    let users = [];
+    if (isAdmin) {
+      users = await db.usersStore.getAllUsers();
+    }
     const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
-        userIsAdmin: await db.usersStore.userIsAdmin(request.auth.credentials._id),
+        userIsAdmin: isAdmin,
         // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
         mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id), 
         username: request.auth.credentials.username,
+        users: users,
         };
+        // console.log(viewData.username);
     if (request.query.info === "success") {
       viewData.infoMessage = "API key saved successfully!";
       viewData.infoClass = "has-text-success";

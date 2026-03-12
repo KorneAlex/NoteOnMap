@@ -1,0 +1,25 @@
+{{!-- https://www.w3schools.com/html/html_tables.asp --}}
+<div style="max-height: 40rem; overflow-y:auto">
+    <table class="table is-fullwidth centered__table is-striped is-narrow">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Points</th>
+            <th>Actions</th>
+        </tr>
+    {{#each viewData.users}}
+    {{#if (eq this.username ../viewData.username)}}
+        <tr style="background-color: rgb(20, 62, 48);">
+    {{else}}
+        <tr>
+    {{/if }}
+            <td>{{this._id}}</td>
+            <td>{{this.username}}</td>
+            <td>{{this.email}}</td>
+            <td>{{#if this.points}}{{this.points.length}}{{else}}0{{/if}}</td>
+            <td><a href="/user?userid={{this._id}}" class="button">{{>svg/user-icon }}</a></td>
+        </tr>
+    {{/each }}
+    </table>
+</div>

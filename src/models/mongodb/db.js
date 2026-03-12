@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   map_api_key: { type: String, required: false },
   points: { type: Array, required: false },
+  isAdmin: { type: Boolean, default: false },
 });
 
 const pointSchema = new mongoose.Schema({

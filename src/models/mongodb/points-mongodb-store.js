@@ -8,9 +8,7 @@ export const pointsStore = {
   // Get      ==================================================================================================================================
 
   async getAllPoints() {
-    const arr = await Point.find().lean();
-    // console.log(arr);
-    return arr;
+    return await Point.find().lean();
   },
 
   /**
@@ -139,10 +137,10 @@ export const pointsStore = {
   },
 
   async deletePointsByCategoryForUserId(uid, category) {
-    const userPoints = await Point.find(
-      { owner: uid },
-      { categories: category },
-    );
+    const userPoints = await Point.find({
+      owner: uid,
+      "data.categories": category,
+    });
     if (!userPoints) {
       // console.log("No points found");
       return null;

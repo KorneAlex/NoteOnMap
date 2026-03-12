@@ -14,6 +14,17 @@ import { db } from "./src/models/db.js";
 
 dotenv.config();
 
+// https://stackoverflow.com/questions/10736907/handlebars-js-else-if
+// https://handlebarsjs.com/playground.html
+Handlebars.registerHelper("eq", function (operand1, operand2) {
+  // console.log("operand1: " + operand1 + " | " + "operant2: " + operand2);
+  if (operand1 === operand2) {
+    return true;
+  } else {
+    return false;
+  }
+});
+
 // variables
 const __dirname = path.resolve();
 
@@ -33,10 +44,7 @@ const init = async () => {
   });
 
   // modules and plugins
-  await server.register([
-    { plugin: Vision },
-    { plugin: Cookie },
-  ]);
+  await server.register([{ plugin: Vision }, { plugin: Cookie }]);
 
   // validator
   // server.validate(Joi);
@@ -75,7 +83,7 @@ const init = async () => {
       if (!account) {
         return { isValid: false };
       }
-      
+
       return { isValid: true, credentials: account };
     },
     redirectTo: "/login",
@@ -113,10 +121,21 @@ const init = async () => {
       if (!/^[a-z0-9.-]+$/i.test(file)) {
         return h.response().code(404);
       }
-      const filePath = path.join(__dirname, "src", "views", "partials", "svg", file);
+      const filePath = path.join(
+        __dirname,
+        "src",
+        "views",
+        "partials",
+        "svg",
+        file,
+      );
       try {
         const content = await fs.promises.readFile(filePath);
-        const type = file.endsWith(".png") ? "image/png" : file.endsWith(".jpg") || file.endsWith(".jpeg") ? "image/jpeg" : "application/octet-stream";
+        const type = file.endsWith(".png")
+          ? "image/png"
+          : file.endsWith(".jpg") || file.endsWith(".jpeg")
+            ? "image/jpeg"
+            : "application/octet-stream";
         return h.response(content).type(type);
       } catch {
         return h.response().code(404);
