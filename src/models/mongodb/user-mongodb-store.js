@@ -1,4 +1,5 @@
 import { User } from "./db.js";
+import { signupSchema } from "../joi-schema.js";
 
 export const usersStore = {
   // Getters  ==================================================================================================================================
@@ -34,15 +35,20 @@ export const usersStore = {
   },
 
   // Add      ==================================================================================================================================
-  async addUser(input) {
-    const userExist = await this.userExist(input.email, input.username);
+  async addUser(userData) {
+    const { error, value } = signupSchema.validate(userData);
+    if (error) {
+      // console.log(error);
+      return null;
+    };
+    const userExist = await this.userExist(value.email, value.username);
     if (userExist) {
       return null;
     }
     const newUser = new User({
-      username: input.username,
-      email: input.email,
-      password: input.password,
+      username: value.username,
+      email: value.email,
+      password: value.password,
       points: [],
     });
     await newUser.save();

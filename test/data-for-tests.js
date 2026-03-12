@@ -4,13 +4,24 @@ export const testData = [{
       username: "DevTest",
       email: "user1@test1.com",
       password: "123123",
-      
+      passwordRepeat: "123123",
+    },
+    
+    testUserWrong1: {
+      username: "!£$%^&*(",
+      email: "user1test1.com",
+      password: "123123",
+      passwordRepeat: "123123",
+    },
+
+    testUserWrong2: {
+      username: "",
+      email: "",
+      password: "",
+      passwordRepeat: "",
     },
   // Points
     testPointCorrect1 : {
-      time: {
-        created: new Date(),
-      },
       pos: {
         lat: 52,
         lon: -7,
@@ -22,45 +33,36 @@ export const testData = [{
       },
     },
     testPointCorrect2 : {
-      owner: "Test1",
-      time: {
-        created: new Date(),
-      },
       pos: {
-        lat: 52,
-        lon: -7,
+        lat: 44,
+        lon: -8,
       },
       data: {
-        name: "Test1",
-        categories: ["DevTest", "test1", "test11"],
+        name: "Test2",
+        description: "Test2",
+        categories: ["DevTest", "test2", "test22"],
       },
     },
     testPointWrong1 : {
-      time: {
-        created: new Date(),
-      },
       pos: {
-        lat: 52,
-        lon: -7,
+        lat: "string",
+        lon: "string",
       },
       data: {
-        name: "Test1",
-        description: "Test1",
-        categories: ["DevTest", "test1", "test11"],
+        name: 87,
+        description: 44,
+        categories: ["DevTest", 34, false],
       },
     },
     testPointWrong2 : {
-      time: {
-        created: new Date(),
-      },
       pos: {
-        lat: 52,
-        lon: -7,
+        lat: true,
+        lon: false,
       },
       data: {
-        name: "Test1",
-        description: "Test1",
-        categories: ["DevTest", "test1", "test11"],
+        name: 87,
+        description: 44,
+        categories: ["DevTest", 34, false],
       },
     },
 }];
