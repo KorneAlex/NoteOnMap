@@ -127,12 +127,12 @@ export const pointsStore = {
   async deletePointsByCategory(category) {
     const points = await Point.find({ "data.categories": category });
     if (!points) {
-      console.log("No points found");
+      // console.log("No points found");
       return null;
     } else {
       for (let point of points) {
         await this.deletePointById(point._id.toString());
-        console.log("Point ", point._id.toString(), " deleted");
+        // console.log("Point ", point._id.toString(), " deleted");
       }
       return points;
     }
