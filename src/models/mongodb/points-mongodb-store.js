@@ -96,7 +96,7 @@ export const pointsStore = {
     console.log("newData:\n", newData);
     const { error, value } = pointUpdateSchema.validate(newData);
     if (error) {
-      console.log(error);
+      // console.log(error);
       return null;
     }
     const newPointData = {
