@@ -64,11 +64,23 @@
 .centered__table td {
   vertical-align: middle !important;
   text-align: center !important;
-  width: auto !important;
+
 }
 
 .centered__table td .button {
   display: block !important;
   margin: 0 auto !important;
   width: fit-content !important; 
+}
+
+.list-button {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 0 !important;
+}
+
+.list-button svg {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 0 !important;
 }

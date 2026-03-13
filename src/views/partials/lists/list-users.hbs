@@ -1,5 +1,6 @@
 {{!-- https://www.w3schools.com/html/html_tables.asp --}}
 <div style="max-height: 40rem; overflow-y:auto">
+    <h1 class="is-">List of users</h1>
     <table class="table is-fullwidth centered__table is-striped is-narrow">
         <tr>
             <th>ID</th>
@@ -10,7 +11,7 @@
         </tr>
     {{#each viewData.users}}
     {{#if (eq this.username ../viewData.username)}}
-        <tr style="background-color: rgb(20, 62, 48);">
+        <tr class="is-selected">
     {{else}}
         <tr>
     {{/if }}
@@ -18,7 +19,7 @@
             <td>{{this.username}}</td>
             <td>{{this.email}}</td>
             <td>{{#if this.points}}{{this.points.length}}{{else}}0{{/if}}</td>
-            <td><a href="/user?userid={{this._id}}" class="button">{{>svg/user-icon }}</a></td>
+            <td><a href="/user?userid={{this._id}}" class="button list-button">{{>svg/user-icon }}</a></td>
         </tr>
     {{/each }}
     </table>

@@ -1,0 +1,26 @@
+
+<form class="box" action="/dashboard/add-point/submit" method="POST" name="form">
+  <label>Add new station:</label>
+  <div class="field">
+    <div class="field-body is-flex is-flex-direction-column">
+      <div class="field">
+       <input class="input" type="text" placeholder="Name" required name="name" />
+      </div>
+      <div class="field">
+        <input class="input" type="text" placeholder="Latitude" required name="lat" />
+      </div>
+      <div class="field">
+        <input class="input" type="text" placeholder="Longitude" required name="lon" />
+      </div>
+      <div class="field">
+        {{!-- TODO: fix it to not be required --}}
+        <input class="input" type="text" placeholder="Description" required name="description" maxlength="200">
+      </div>
+      <div class="field">
+        {{!-- temp --}}
+        <input class="input" type="text" placeholder="Categories" name="categories" maxlength="200"> 
+      </div>
+    </div>
+  </div>
+  <button class="button is-primary">Create point</button>
+</form>

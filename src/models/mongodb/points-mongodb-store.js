@@ -1,5 +1,6 @@
 import { Point } from "./db.js";
 import { User } from "./db.js";
+import mongoose from "mongoose";
 import { db } from "../db.js";
 import { pointSchema } from "../joi-schema.js";
 import { pointUpdateSchema } from "../joi-schema.js";
@@ -26,18 +27,24 @@ export const pointsStore = {
       { _id: uid },
       { points: 1, _id: 0 }, // projection. return points without _id
     ).lean(); // get normal js object
-    const points = arr["points"];
-    let pointsData = [];
-    for (let pointId of points) {
-      let pointData = await this.getPointDataById(pointId);
-      pointsData.push(pointData);
-      // console.log(pointData);
+    if (!arr) {
+      return [];
     }
-
+    const points = arr.points;
+    const pointsData = [];
+    for (const pointId of points) {
+      const pointData = await this.getPointDataById(pointId);
+      if (pointData) {
+        pointsData.push(pointData);
+      }
+    }
     return pointsData;
   },
 
   async getPointDataById(id) {
+    if (!mongoose.Types.ObjectId.isValid(id)) { // AI fixed
+      return null;
+    }
     return await Point.findOne({ _id: id }).lean();
   },
 
@@ -55,6 +62,7 @@ export const pointsStore = {
   async addPoint(pointData) {
     const { error, value } = pointSchema.validate(pointData);
     if (error) {
+      // console.log(error);
       return null;
     }
     const pointToAdd = {
@@ -91,7 +99,7 @@ export const pointsStore = {
    *
    * */
   async editPoint(pointId, newData) {
-    console.log("newData:\n", newData);
+    // console.log("newData:\n", newData);
     const { error, value } = pointUpdateSchema.validate(newData);
     if (error) {
       // console.log(error);

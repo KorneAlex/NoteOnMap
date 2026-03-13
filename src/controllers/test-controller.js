@@ -1,7 +1,9 @@
 import { testSchema } from "../models/joi-schema.js";
+import { db } from "../models/db.js"
 
 export const testController = {
-  test: (request, h) => {
+  test: async (request, h) => {
+    const points = await db.pointsStore.getAllPointsForUserId(request.auth.credentials._id);
     const viewData = {
       isAuthenticated: request.auth.isAuthenticated,
     };
@@ -26,7 +28,7 @@ export const testController = {
     },
 
     handler: (request, h) => {
-      console.log("Validated payload:", request.payload);
+      // console.log("Validated payload:", request.payload);
 
       const viewData = {
         isAuthenticated: request.auth.isAuthenticated,

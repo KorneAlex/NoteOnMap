@@ -58,7 +58,6 @@ export const accountController = {
       };
 
       if (request.auth.isAuthenticated) {
-
         return h.redirect("/dashboard");
       }
       return h.view("./pages/login", {

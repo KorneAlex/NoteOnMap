@@ -1,11 +1,11 @@
-{{> left-pane }}
-{{> account-menu }}
+{{> interface/left-pane }}
+{{> interface/account-menu }}
   <section style="z-index: 0;">
     {{#if viewData.mapsApiKey }}
     {{> map/map }}
     {{!-- {{> map/tst }} --}}
     {{!-- {{> map/add-point }} --}}
     {{else}}
-      {{> api-key-warning }}
+      {{> warnings/api-key-warning }}
     {{/if}}
   </section>
