@@ -28,6 +28,13 @@ export const usersStore = {
     }
     return User.findById(id);
   },
+  async getUserDataById(id) {
+    if (!id) return null;
+    if (typeof id !== "string") {
+      id = id.toString();
+    }
+    return User.findById(id).lean();
+  },
 
   async getApiKeyByUserId(userId) {
     const user = await this.getUserById(userId);
@@ -62,6 +69,11 @@ export const usersStore = {
   // Delete   ==================================================================================================================================
 
   async deleteUserById(id) {
+    if (!id) return null;
+    if (typeof id !== "string") {
+      id = id.toString();
+    }
+    // console.log("[ deleteUserById ] deleting user: ", id)
     const result = await User.findOneAndDelete({ _id: id });
     return result != null;
   },
@@ -87,6 +99,15 @@ export const usersStore = {
       { _id: uid },
       { isAdmin: 1, _id: 0 },
     ).lean();
+    // console.log("[ userIsAdmin ] ", isAdmin);
     return isAdmin["isAdmin"];
+  },
+
+  async isLastAdmin() {
+    const adminList = await User.find(
+      { isAdmin: true },
+    ).lean();
+    // console.log("adminList.length", adminList.length);
+    return !! adminList.lenght == 1
   },
 };

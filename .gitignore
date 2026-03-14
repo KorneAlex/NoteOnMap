@@ -3,3 +3,4 @@ node_modules/
 # test.js
 # test/
 src/views/partials/map/tst.hbs
+src/views/partials/svg/point_old.png

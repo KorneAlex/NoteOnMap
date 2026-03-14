@@ -13,9 +13,14 @@
   <aside class="left-pane" id="left-pane" role="navigation" aria-label="Main menu">
     <nav class="left-pane__nav">
       <ul class="left-pane__menu">
-      {{#if viewData.isAuthenticated}}
+        General
         <li>
-          <a href="/dashboard">Dashboard</a>
+          <a href="/"><span class="has-text-primary">-</span> Main page</a>
+        </li>
+      {{#if viewData.userIsAdmin}}
+      <p>Admin console</p>
+        <li>
+          <a href="/users"><span class="has-text-primary">-</span> Users</a>
         </li>
       {{/if}}
 
@@ -36,12 +41,12 @@
           role="menu"
           aria-labelledby="left-pane-more-trigger"
         >
-          <li role="none"><a href="/about" role="menuitem">About</a></li>
+          <li role="none"><a href="/about" role="menuitem"><span class="has-text-primary">-</span> About</a></li>
           <li role="separator" class="left-pane__dropdown-divider"></li>
           <li role="none">
-            <a href="https://github.com/KorneAlex/NoteOnMap/issues" target="_blank" rel="noopener noreferrer" role="menuitem">Report an issue</a>
+            <a href="https://github.com/KorneAlex/NoteOnMap/issues" target="_blank" rel="noopener noreferrer" role="menuitem"><span class="has-text-primary">-</span> Report an issue</a>
           </li>
-          <li role="none"><a href="/test" role="menuitem">Test</a></li>
+          <li role="none"><a href="/test" role="menuitem"><span class="has-text-primary">-</span> Test</a></li>
         </ul>
       </li>
     </ul>

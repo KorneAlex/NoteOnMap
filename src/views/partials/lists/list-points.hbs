@@ -4,9 +4,10 @@
     <table class="table is-fullwidth centered__table is-striped is-narrow">
         <tr>
             <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Points</th>
+            <th>Name</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Categories</th>
             <th>Actions</th>
         </tr>
     {{#each viewData.users}}
@@ -16,12 +17,13 @@
         <tr>
     {{/if }}
             <td>{{this._id}}</td>
-            <td>{{this.username}}</td>
-            <td>{{this.email}}</td>
-            <td>{{#if this.points}}{{this.points.length}}{{else}}0{{/if}}</td>
-            <td class="is-flex is-justify-content-center">
-                <a href="/user?userid={{this._id}}" class="button list-button">{{>svg/user-icon }}</a>
-                <a href="/user/{{this._id}}/delete" class="button list-button">{{>svg/delete }}</a>
+            <td>{{this.data.name}}</td>
+            <td>{{this.pos.lat}}</td>
+            <td>{{this.pos.lon}}</td>
+            <td>{{this.categories.length}}{{else}}0{{/if}}</td>
+            <td>
+            <a href="/user?userid={{this._id}}" class="button list-button">{{>svg/point }}</a>
+            <a href="/user?userid={{this._id}}" class="button list-button">{{>svg/delete }}</a>
             </td>
         </tr>
     {{/each }}

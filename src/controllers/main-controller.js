@@ -22,7 +22,7 @@ export const mainController = {
     });
   },
 
-  async dashboard(request, h) {
+  dashboard: async (request, h) => {
     const userId = request.auth?.credentials?._id;
     const points = await db.pointsStore.getAllPointsForUserId(
       userId.toString(),
@@ -41,14 +41,10 @@ export const mainController = {
     });
   },
 
-  async account(request, h) {
+  account: async (request, h) => {
     const isAdmin = await db.usersStore.userIsAdmin(
       request.auth.credentials._id,
     );
-    let users = [];
-    if (isAdmin) {
-      users = await db.usersStore.getAllUsers();
-    }
     const viewData = {
       isAuthenticated: request.auth.isAuthenticated,
       userIsAdmin: isAdmin,
@@ -57,7 +53,6 @@ export const mainController = {
         request.auth.credentials._id,
       ),
       username: request.auth.credentials.username,
-      users: users,
     };
     // console.log(viewData.username);
     if (request.query.info === "success") {
@@ -71,7 +66,7 @@ export const mainController = {
     return h.view("./pages/account", { title: "Account", viewData: viewData });
   },
 
-  async point(request, h) {
+   point: async (request, h) => {
       const isAdmin = await db.usersStore.userIsAdmin(
         request.auth.credentials._id,
       );
@@ -122,5 +117,43 @@ export const mainController = {
       };
       return h.view("./pages/point", { title: "Point", viewData: viewData });
       }
+    },
+
+    users: async (request, h) => {
+      const isAdmin = await db.usersStore.userIsAdmin(request.auth.credentials._id);
+      let allUsers = [];
+      if (isAdmin) {
+        allUsers = await db.usersStore.getAllUsers();
+      } else { 
+        return h.redirect("/");
+      }
+      const viewData = {
+        isAuthenticated: request.auth.isAuthenticated,
+        userIsAdmin: isAdmin,
+        username: request.auth.credentials.username,
+        users: allUsers
+      };
+      if (request.query.info === "deleted") {
+        viewData.message = "The user has been deleted.";
+      }
+      if (request.query.error === "admin") {
+        viewData.message = "The user is Admin. Remove admin status first.";
+      }
+      await db.usersStore.isLastAdmin();
+      return h.view("./pages/users", { title: "Users", viewData: viewData });
+    },
+
+    user: async (request, h) => {
+      const isAdmin = await db.usersStore.userIsAdmin(request.auth.credentials._id);
+      if (!isAdmin) {
+        return h.redirect("/");
+      }
+      const viewData = {
+        isAuthenticated: request.auth.isAuthenticated,
+        userIsAdmin: isAdmin,
+        username: request.auth.credentials.username,
+        userData: await db.usersStore.getUserDataById(request.query.userid),
+      };
+      return h.view("./pages/user", { title: "Users", viewData: viewData });
     }
 };

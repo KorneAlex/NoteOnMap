@@ -13,6 +13,9 @@ export const routes = [
     { method: 'GET', path: '/dashboard', handler: mainController.dashboard },
     { method: 'GET', path: '/account', handler: mainController.account },
     { method: 'GET', path: '/point', handler: mainController.point },
+    { method: 'GET', path: '/users', handler: mainController.users },
+    { method: 'GET', path: '/user/{uid}/delete', config: actionsController.deleteUser },
+    { method: 'GET', path: '/user', handler: mainController.user },
 
     // account pages
     { method: 'GET', path: '/login', config: accountController.login },
