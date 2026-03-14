@@ -42,7 +42,7 @@ map.on('contextmenu', (e) => {
     // create the popup
         //console.log(point.data.description);
     const popup = new maptilersdk.Popup({ offset: 25 }).setHTML(
-        `<strong class="is-size-5"><a href="/">${point.data.name}</a></strong><p>${point.data.description}</p>`
+        `<strong class="is-size-5"><a href="/point?id=${point._id.toString()}">${point.data.name}</a></strong><p>${point.data.description}</p>`
     );
 
 

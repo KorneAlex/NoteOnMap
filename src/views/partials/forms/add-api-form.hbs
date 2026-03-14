@@ -5,7 +5,7 @@
     method="POST"
     action="/addApiToAccount"
   >
-  <p>Current MapTiles API Key: {{ viewData.mapsApiKey }}</p>
+  <p>Current MapTiles API Key: <span id="map-api-key" class="is-hidden">{{ viewData.mapsApiKey }}</span> <a id="show-api-button" onclick="revealApi()" class="has-text-primary">Show API Key</a></p>
     <div>
       <div class="field">
         <input
@@ -37,3 +37,10 @@
 
 
 </div>
+
+<script type="text/javascript">
+  function revealApi() {
+    document.getElementById("map-api-key").classList.remove("is-hidden");
+    document.getElementById("show-api-button").classList.add("is-hidden");
+  }
+</script>

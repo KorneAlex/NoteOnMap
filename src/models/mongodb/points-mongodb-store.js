@@ -41,6 +41,22 @@ export const pointsStore = {
     return pointsData;
   },
 
+  async getAllPointsIdForUserId(uid) {
+    const arr = await User.findOne(
+      { _id: uid },
+      { points: 1, _id: 0 }, // projection. returns _id only
+    ).lean(); // get normal js object
+    if (!arr) {
+      return [];
+    }
+    const points = arr.points;
+    const pointsIds = [];
+    for (const pointId of points) {
+      pointsIds.push(pointId.toString());
+    }
+    return pointsIds;
+  },
+
   async getPointDataById(id) {
     if (!mongoose.Types.ObjectId.isValid(id)) { // AI fixed
       return null;

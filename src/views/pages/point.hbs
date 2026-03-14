@@ -1,0 +1,90 @@
+<div style="text-align: center; margin-bottom: 2rem;">
+  <div class="title is-2 p-5"><span>Point</span></div> 
+  {{#if viewData.message }}
+    <p class="has-text-danger">{{ viewData.message }}</p>
+</div>
+{{else}}
+</div>
+
+
+<style>
+    .dashboard__summary--element {
+        width: 225px; 
+        {{!-- border-style: solid; --}}
+        border-radius: 4px;
+        border-color: red;
+    }
+    .dashboard__summary--header {
+        background-color: #EEEEEE;
+        border-radius: 10px;
+    }
+    @media only screen and (max-width: 600px){
+    .dashboard__summary--element {
+        width: 100%;
+    }
+
+    .fullwidth__mobile {
+        width: 100%;
+    }
+    }
+</style>
+
+<section class="is-flex is-flex-direction-column is-justify-content-center is-justify-content-space-around is-flex-wrap-wrap" style="margin-bottom: 2rem;">
+    <div class="dashboard__summary--element">
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title">Location<br></div>
+            <div class="card-header-icon"> </div>
+        </div>
+        <div class="card-content">
+            <p>Longitude: </p>
+            <p>Latitude: </p>
+        </div>
+    </div>
+    </div>
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title">Name</div>
+            <div class="card-header-icon"></div>
+        </div>
+        <div class="card-content">
+            <p>Name</p>
+        </div>
+    </div>
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title">Description</div>
+            <div class="card-header-icon"></div>
+        </div>
+        <div class="card-content">
+            <p>Description</p>
+        </div>
+    </div>
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title">Categories</div>
+            <div class="card-header-icon"></div>
+        </div>
+        <div class="is-flex is-flex-direction-row card-content">
+            <p>Cat1</p>
+            <p>Cat2</p>
+            <p>Cat3</p>
+        </div>
+    </div>
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title">Created on</div>
+            <div class="card-header-icon"></div>
+        </div>
+        <div class="card-content">
+            <p>Timestamp</p>
+        </div>
+    </div>
+</section>
+
+{{/if}}

@@ -70,4 +70,57 @@ export const mainController = {
     }
     return h.view("./pages/account", { title: "Account", viewData: viewData });
   },
+
+  async point(request, h) {
+      const isAdmin = await db.usersStore.userIsAdmin(
+        request.auth.credentials._id,
+      );
+      const userPoints = await db.pointsStore.getAllPointsIdForUserId(request.auth.credentials._id.toString());
+      const pid = request.query.id;
+      const viewDataBasic = {
+        isAuthenticated: request.auth.isAuthenticated,
+        userIsAdmin: isAdmin,
+        username: request.auth.credentials.username,
+      };
+
+      // console.log("id: ", pid);
+      // console.log("UserPoints:", userPoints);
+
+      if (userPoints.includes(pid)) { // https://stackoverflow.com/questions/237104/how-do-i-check-if-an-array-includes-a-value-in-javascript
+        // user has the point id in his list
+        const point = await db.pointsStore.getPointDataById(pid);
+        const viewData = {
+            ...viewDataBasic,
+            pointData: point
+          };
+          return h.view("./pages/point", { title: "Point", viewData: viewData });
+      } else {
+        // user doesn't have the point id in his list
+        if (isAdmin) {
+          // user is admin
+          const point = await db.pointsStore.getPointDataById(pid);
+          if (point != null){
+            // point exist
+            const viewData = {
+              ...viewDataBasic,
+              pointData: point
+            };
+            return h.view("./pages/point", { title: "Point", viewData: viewData });
+          } else {
+            // The point doesn't exist for the admin user.
+            const viewData = {
+            ...viewDataBasic,
+            message: "The point doesn't exist."
+            }
+            return h.view("./pages/point", { title: "Point", viewData: viewData });
+        }
+      }
+        // Message for the user
+        const viewData = {
+        ...viewDataBasic,
+        message: "The point doesn't exist or you don't have access to this point"
+      };
+      return h.view("./pages/point", { title: "Point", viewData: viewData });
+      }
+    }
 };

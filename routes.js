@@ -12,6 +12,7 @@ export const routes = [
     { method: 'GET', path: '/about', handler: mainController.about, options: { auth: { mode: 'try' } } },
     { method: 'GET', path: '/dashboard', handler: mainController.dashboard },
     { method: 'GET', path: '/account', handler: mainController.account },
+    { method: 'GET', path: '/point', handler: mainController.point },
 
     // account pages
     { method: 'GET', path: '/login', config: accountController.login },
