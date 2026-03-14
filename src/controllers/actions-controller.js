@@ -55,4 +55,25 @@ export const actionsController = {
       return h.redirect("/dashboard");
     },
   },
+
+  deleteUser: {
+    handler: async (request, h) => {
+      const isAdmin = await db.usersStore.userIsAdmin(
+        request.auth.credentials._id,
+      );
+      // console.log("am i admin? ", isAdmin);
+      if (isAdmin) {
+        const userIsAdmin = await db.usersStore.userIsAdmin(
+          request.params.uid,
+        );
+        // console.log("is user admin? ", userIsAdmin);
+        if (!userIsAdmin) {
+          await db.usersStore.deleteUserById(request.params.uid);
+        } else {
+          return h.redirect("/users?error=admin");
+        }
+      }
+      return h.redirect("/users?info=deleted");
+    },
+  },
 };

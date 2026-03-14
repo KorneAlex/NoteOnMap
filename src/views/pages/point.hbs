@@ -1,0 +1,90 @@
+<div style="text-align: center; margin-bottom: 2rem;">
+  <div class="title is-2 pt-5 mb-0"><span>Point {{ viewData.pointData.data.name }}</span></div> 
+  <p>{{ viewData.pointData._id }}</p>
+  {{#if viewData.message }}
+    <p class="has-text-danger">{{ viewData.message }}</p>
+</div>
+{{else}}
+</div>
+
+
+<style>
+    .point__summary--element {
+        width: 500px; 
+        {{!-- border-style: solid; --}}
+        border-radius: 4px;
+        border-color: red;
+    }
+    .point__summary--header {
+        background-color: var(--bulma-primary-dark);
+        padding-left: 10px;
+        margin-bottom: 5px;
+        border-radius: 10px;
+    }
+    .point__summary--info,
+    .card-content.point__summary--info {
+        padding-left: 10px;
+    }
+    .point__summary--info p {
+        margin-bottom: 0.25em;
+    }
+    @media only screen and (max-width: 600px){
+    .point__summary--element {
+        width: 100%;
+    }
+
+    .fullwidth__mobile {
+        width: 100%;
+    }
+    }
+</style>
+
+<section class="is-flex is-flex-direction-column is-justify-content-center is-justify-content-space-around is-flex-wrap-wrap" style="margin-bottom: 2rem;">
+    <div class="point__summary--element">
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title point__summary--header">Location<br></div>
+            <div class="card-header-icon"> </div>
+        </div>
+        <div class="point__summary--info card-content">
+            <p>Longitude: {{ viewData.pointData.pos.lon }}</p>
+            <p>Latitude: {{ viewData.pointData.pos.lat }}</p>
+        </div>
+    </div>
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title point__summary--header">Description</div>
+            <div class="card-header-icon"></div>
+        </div>
+        <div class="card-content point__summary--info">
+            <p>{{ viewData.pointData.data.description }}</p>
+        </div>
+    </div>
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title point__summary--header">Categories: {{ viewData.pointData.data.categories.length }}</div>
+            <div class="card-header-icon"></div>
+        </div>
+        <div class="is-flex is-flex-direction-row card-content point__summary--info">
+            {{#each viewData.pointData.data.categories }}
+            <p>{{this}}&nbsp;</p>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="p-2">
+        <div class="is-flex is-flex-direction-row">
+            <div class="card-header-title point__summary--header">Created on</div>
+            <div class="card-header-icon"></div>
+        </div>
+        <div class="card-content point__summary--info">
+            <p>{{ viewData.pointData.time.created }}</p>
+        </div>
+    </div>
+    </div>
+</section>
+
+{{/if}}
