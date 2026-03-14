@@ -23,6 +23,16 @@
         zoom: 6,
     });
 
+const contextPopup = new maptilersdk.Popup();
+map.on('contextmenu', (e) => {
+  console.log(e);
+  
+
+  contextPopup.setLngLat(e.lngLat)
+                .setHTML(`{{> forms/add-point-form }}`)
+                .addTo(map);
+        });
+
   
     const points = {{{viewData.pointsJson}}};
     // console.log(points);

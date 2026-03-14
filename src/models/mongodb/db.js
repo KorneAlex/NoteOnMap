@@ -1,9 +1,15 @@
 import mongoose from "mongoose";
 
 export async function connect() {
-  await mongoose.connect(process.env.MONGO_URL, {
-    serverSelectionTimeoutMS: 5000,
-  });
+  try {
+
+    await mongoose.connect(process.env.MONGO_URL, {
+      serverSelectionTimeoutMS: 5000,
+    });
+  } catch {
+    console.log("No connection to the database");
+  }
+  // TODO: make the app to load if there is no connection to DB displaying the error message on the page
 }
 
 const userSchema = new mongoose.Schema({

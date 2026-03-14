@@ -52,10 +52,6 @@ export const pointsStore = {
     return await Point.findOne({ _id: pid });
   },
 
-  // async getUserById(uid) {
-  //   return await User.findOne({"_id": `${uid}`});
-  // },
-
   // Create   ==================================================================================================================================
 
   // AI help with validation implementation
@@ -79,17 +75,6 @@ export const pointsStore = {
     await user.save();
     return newPoint;
   },
-
-  // async addPoint(pointData) {
-
-  //   const newPoint = new Point(pointData);
-  //   await newPoint.save();
-  //   const user = await db.usersStore.getUserById(pointData.owner);
-  //   // console.log(user);
-  //   user.points.push(newPoint._id.toString());
-  //   await user.save();
-  //   return newPoint;
-  // },
 
   // Update   ==================================================================================================================================
 

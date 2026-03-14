@@ -7,10 +7,10 @@
        <input class="input" type="text" placeholder="Name" required name="name" />
       </div>
       <div class="field">
-        <input class="input" type="text" placeholder="Latitude" required name="lat" />
+        <input class="input" type="text" placeholder="Latitude" value="${e.lngLat.lat}" required name="lat" />
       </div>
       <div class="field">
-        <input class="input" type="text" placeholder="Longitude" required name="lon" />
+        <input class="input" type="text" placeholder="Longitude" value="${e.lngLat.lng}" required name="lon" />
       </div>
       <div class="field">
         {{!-- TODO: fix it to not be required --}}

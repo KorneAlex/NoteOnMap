@@ -19,6 +19,7 @@ body {
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
+  z-index: 100;
 }
 
 .maplibregl-ctrl-top-right {
@@ -41,4 +42,5 @@ body {
   min-width: 200px;
   min-height: 200px;
   max-width: 300px;
+  z-index: 101;
 }

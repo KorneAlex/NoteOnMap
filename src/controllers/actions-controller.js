@@ -50,7 +50,8 @@ export const actionsController = {
       // console.log(pointData);
 
       await db.pointsStore.addPoint(pointData);
-
+      // TODO: make it update the map without reloading the page
+      // return null
       return h.redirect("/dashboard");
     },
   },
