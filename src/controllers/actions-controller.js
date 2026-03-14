@@ -1,5 +1,5 @@
 import { db } from "../models/db.js";
-import { pointSchema } from "../models/joi-schema.js";
+import { addPointFormSchema } from "../models/joi-schema.js";
 
 export const actionsController = {
   addApiKey: {
@@ -19,38 +19,40 @@ export const actionsController = {
 
   addPoint: {
     validate: {
-      payload: pointSchema,
+      payload: addPointFormSchema,
       failAction: (request, h, err) => {
         const viewData = {
           isAuthenticated: request.auth.isAuthenticated,
           infoMessage: err.details[0].message,
           infoClass: "has-text-danger",
         };
+        // console.log(err);
         return h
-          .view("./dashboard", { title: "Dashboard", viewData })
+          .view("./pages/account", { title: "Account", viewData })
           .takeover();
       },
     },
     handler: async (request, h) => {
-
+      const { lat, lon, name, description } = request.payload;
       const pointData = {
-      owner: request.auth.credentials._id,
-      pos: { 
-        lat: request.payload.lat,
-        lon: request.payload.lon,
-      },
-      data: {
-        name: request.payload.name,
-        description: request.payload.description,
-        categories: request.payload.categories // this will be a personal category name for user to be able to filter points on map by category
-      },
-      }
+        owner: request.auth.credentials._id.toString(),
+        pos: {
+          lat,
+          lon,
+        },
+        data: {
+          name,
+          description,
+          // categories: categories, // used to filter points on map by category
+        },
+      };
 
       // console.log(pointData);
 
       await db.pointsStore.addPoint(pointData);
-
+      // TODO: make it update the map without reloading the page
+      // return null
       return h.redirect("/dashboard");
-    }
-  }
+    },
+  },
 };

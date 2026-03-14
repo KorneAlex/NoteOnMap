@@ -1,9 +1,15 @@
 import mongoose from "mongoose";
 
 export async function connect() {
-  await mongoose.connect(process.env.MONGO_URL, {
-    serverSelectionTimeoutMS: 5000,
-  });
+  try {
+
+    await mongoose.connect(process.env.MONGO_URL, {
+      serverSelectionTimeoutMS: 5000,
+    });
+  } catch {
+    console.log("No connection to the database");
+  }
+  // TODO: make the app to load if there is no connection to DB displaying the error message on the page
 }
 
 const userSchema = new mongoose.Schema({
@@ -12,6 +18,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   map_api_key: { type: String, required: false },
   points: { type: Array, required: false },
+  isAdmin: { type: Boolean, default: false },
 });
 
 const pointSchema = new mongoose.Schema({
@@ -25,7 +32,7 @@ const pointSchema = new mongoose.Schema({
   },
   data: {
     name: { type: String, required: true },
-    description: { type: String, required: false },
+    description: { type: String, default: "" },
     categories: { type: [String], default: [] }, // array of strings (AI help)
   },
 });

@@ -85,7 +85,7 @@ export const mongodbTests = M.suite("MongoDB Tests", () => {
         owner: uid,
       };
       const newPoint = await pointsStore.addPoint(pointData);
-      console.log("new point: ", newPoint);
+      // console.log("new point: ", newPoint);
       assert.isNotNull(newPoint["_id"], "Point ID should not be null");
       assert.isNotNull(
         newPoint.time.created,

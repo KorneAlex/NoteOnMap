@@ -3,7 +3,7 @@ import { db } from "../models/db.js";
 export const mainController = {
   index: (request, h) => {
     const viewData = {
-        isAuthenticated: request.auth.isAuthenticated,
+      isAuthenticated: request.auth.isAuthenticated,
     };
     return h.view("index", {
       title: "Home Page",
@@ -14,32 +14,52 @@ export const mainController = {
 
   about: (request, h) => {
     const viewData = {
-        isAuthenticated: request.auth.isAuthenticated,
+      isAuthenticated: request.auth.isAuthenticated,
     };
-    return h.view("./pages/about", { title: "About The project", viewData: viewData });
+    return h.view("./pages/about", {
+      title: "About The project",
+      viewData: viewData,
+    });
   },
 
   async dashboard(request, h) {
-    const points = await db.pointsStore.getAllPointsForUserId(request.auth.credentials._id); // passing points for the current user from the server side to the client side
+    const userId = request.auth?.credentials?._id;
+    const points = await db.pointsStore.getAllPointsForUserId(
+      userId.toString(),
+    );
     const viewData = {
-        isAuthenticated: request.auth.isAuthenticated,
-        userId: request.auth.credentials._id,
-        userIsAdmin: await db.usersStore.userIsAdmin(request.auth.credentials._id),
-        pointsJson: JSON.stringify(points), // convertting the data to JSON format so the client can work with it
-        // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
-        mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id)
+      isAuthenticated: request.auth.isAuthenticated,
+      userId,
+      userIsAdmin: await db.usersStore.userIsAdmin(userId),
+      pointsJson: JSON.stringify(points),
+      mapsApiKey: await db.usersStore.getApiKeyByUserId(userId),
     };
-    return h.view("./pages/dashboard", { title: "Dashboard", isDashboard: true, viewData: viewData });
+    return h.view("./pages/dashboard", {
+      title: "Dashboard",
+      isDashboard: true,
+      viewData: viewData,
+    });
   },
 
   async account(request, h) {
+    const isAdmin = await db.usersStore.userIsAdmin(
+      request.auth.credentials._id,
+    );
+    let users = [];
+    if (isAdmin) {
+      users = await db.usersStore.getAllUsers();
+    }
     const viewData = {
-        isAuthenticated: request.auth.isAuthenticated,
-        userIsAdmin: await db.usersStore.userIsAdmin(request.auth.credentials._id),
-        // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
-        mapsApiKey: await db.usersStore.getApiKeyByUserId(request.auth.credentials._id), 
-        username: request.auth.credentials.username,
-        };
+      isAuthenticated: request.auth.isAuthenticated,
+      userIsAdmin: isAdmin,
+      // TODO: to reduce load on mongodb make requests to local storage. if no local storage try to get it from mongodb
+      mapsApiKey: await db.usersStore.getApiKeyByUserId(
+        request.auth.credentials._id,
+      ),
+      username: request.auth.credentials.username,
+      users: users,
+    };
+    // console.log(viewData.username);
     if (request.query.info === "success") {
       viewData.infoMessage = "API key saved successfully!";
       viewData.infoClass = "has-text-success";

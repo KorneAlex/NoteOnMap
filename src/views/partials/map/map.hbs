@@ -23,14 +23,24 @@
         zoom: 6,
     });
 
+const contextPopup = new maptilersdk.Popup();
+map.on('contextmenu', (e) => {
+  console.log(e);
+  
+
+  contextPopup.setLngLat(e.lngLat)
+                .setHTML(`{{> forms/add-point-form }}`)
+                .addTo(map);
+        });
+
   
     const points = {{{viewData.pointsJson}}};
-    console.log(points);
+    // console.log(points);
     let counter = 0;
     for (const point of points) {
         const coordinates = [point.pos["lon"], point.pos["lat"]]
     // create the popup
-        console.log(point.data.description);
+        //console.log(point.data.description);
     const popup = new maptilersdk.Popup({ offset: 25 }).setHTML(
         `<strong class="is-size-5"><a href="/">${point.data.name}</a></strong><p>${point.data.description}</p>`
     );

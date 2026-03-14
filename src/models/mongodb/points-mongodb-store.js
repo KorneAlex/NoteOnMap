@@ -1,5 +1,6 @@
 import { Point } from "./db.js";
 import { User } from "./db.js";
+import mongoose from "mongoose";
 import { db } from "../db.js";
 import { pointSchema } from "../joi-schema.js";
 import { pointUpdateSchema } from "../joi-schema.js";
@@ -8,9 +9,7 @@ export const pointsStore = {
   // Get      ==================================================================================================================================
 
   async getAllPoints() {
-    const arr = await Point.find().lean();
-    // console.log(arr);
-    return arr;
+    return await Point.find().lean();
   },
 
   /**
@@ -28,18 +27,24 @@ export const pointsStore = {
       { _id: uid },
       { points: 1, _id: 0 }, // projection. return points without _id
     ).lean(); // get normal js object
-    const points = arr["points"];
-    let pointsData = [];
-    for (let pointId of points) {
-      let pointData = await this.getPointDataById(pointId);
-      pointsData.push(pointData);
-      // console.log(pointData);
+    if (!arr) {
+      return [];
     }
-
+    const points = arr.points;
+    const pointsData = [];
+    for (const pointId of points) {
+      const pointData = await this.getPointDataById(pointId);
+      if (pointData) {
+        pointsData.push(pointData);
+      }
+    }
     return pointsData;
   },
 
   async getPointDataById(id) {
+    if (!mongoose.Types.ObjectId.isValid(id)) { // AI fixed
+      return null;
+    }
     return await Point.findOne({ _id: id }).lean();
   },
 
@@ -47,16 +52,13 @@ export const pointsStore = {
     return await Point.findOne({ _id: pid });
   },
 
-  // async getUserById(uid) {
-  //   return await User.findOne({"_id": `${uid}`});
-  // },
-
   // Create   ==================================================================================================================================
 
   // AI help with validation implementation
   async addPoint(pointData) {
     const { error, value } = pointSchema.validate(pointData);
     if (error) {
+      // console.log(error);
       return null;
     }
     const pointToAdd = {
@@ -74,17 +76,6 @@ export const pointsStore = {
     return newPoint;
   },
 
-  // async addPoint(pointData) {
-
-  //   const newPoint = new Point(pointData);
-  //   await newPoint.save();
-  //   const user = await db.usersStore.getUserById(pointData.owner);
-  //   // console.log(user);
-  //   user.points.push(newPoint._id.toString());
-  //   await user.save();
-  //   return newPoint;
-  // },
-
   // Update   ==================================================================================================================================
 
   /**
@@ -93,7 +84,7 @@ export const pointsStore = {
    *
    * */
   async editPoint(pointId, newData) {
-    console.log("newData:\n", newData);
+    // console.log("newData:\n", newData);
     const { error, value } = pointUpdateSchema.validate(newData);
     if (error) {
       // console.log(error);
@@ -139,10 +130,10 @@ export const pointsStore = {
   },
 
   async deletePointsByCategoryForUserId(uid, category) {
-    const userPoints = await Point.find(
-      { owner: uid },
-      { categories: category },
-    );
+    const userPoints = await Point.find({
+      owner: uid,
+      "data.categories": category,
+    });
     if (!userPoints) {
       // console.log("No points found");
       return null;

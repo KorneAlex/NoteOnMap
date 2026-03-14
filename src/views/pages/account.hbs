@@ -2,7 +2,8 @@
   <div class="title is-2 p-5"><span>Hi, {{viewData.username}} [{{{viewData.userIsAdmin}}}]</span></div> 
 </div>
 {{#if viewData.userIsAdmin }}
-{{> add-api-form }}
+{{> forms/add-api-form }}
+{{> lists/list-users }}
 {{else }}
-{{> add-api-form }}
+{{> forms/add-api-form }}
 {{/if }}

@@ -23,7 +23,7 @@ export const usersStore = {
    */
   async getUserById(id) {
     if (!id) return null;
-    if (typeof id != String) {
+    if (typeof id !== "string") {
       id = id.toString();
     }
     return User.findById(id);
@@ -57,8 +57,7 @@ export const usersStore = {
 
   async addApiKey(userId, key) {
     await User.updateOne({ _id: userId }, { map_api_key: key });
-    const updatedUser = await this.getUserById(userId);
-    return updatedUser;
+    return await this.getUserById(userId);
   },
   // Delete   ==================================================================================================================================
 

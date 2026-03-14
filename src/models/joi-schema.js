@@ -17,16 +17,25 @@ export const signupSchema = Joi.object({
 });
 
 export const pointSchema = Joi.object({
-  owner: Joi.string().required(),
+  owner: Joi.string(),
   pos: {
     lat: Joi.number().min(-90).max(90).required(), // -90 to 90
     lon: Joi.number().min(-180).max(180).required(), // -180 to 180
   },
   data: {
     name: Joi.string().alphanum().min(2).max(20).required(),
-    description: Joi.string().alphanum().max(200),
+    description: Joi.string().max(200),
     categories: Joi.array().items(Joi.string().alphanum().min(1).max(20)), // AI help
   },
+});
+
+// Schema for the add-point form
+export const addPointFormSchema = Joi.object({
+  lat: Joi.number().min(-90).max(90).required(),
+  lon: Joi.number().min(-180).max(180).required(),
+  name: Joi.string().alphanum().min(2).max(20).required(),
+  description: Joi.string().max(200),
+  categories: Joi.array().allow("").optional(), // not ready yet
 });
 
 export const pointUpdateSchema = Joi.object({
@@ -36,7 +45,7 @@ export const pointUpdateSchema = Joi.object({
   },
   data: {
     name: Joi.string().alphanum().min(2).max(20).required(),
-    description: Joi.string().alphanum().max(200),
+    description: Joi.string().max(200),
     categories: Joi.array().items(Joi.string().alphanum().min(1).max(20)), // AI help
   },
 });
