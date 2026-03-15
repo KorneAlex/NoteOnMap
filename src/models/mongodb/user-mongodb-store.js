@@ -116,12 +116,16 @@ export const usersStore = {
   },
 
   async userIsAdmin(uid) {
-    const isAdmin = await User.findOne(
-      { _id: uid },
-      { isAdmin: 1, _id: 0 },
-    ).lean();
-    // console.log("[ userIsAdmin ] ", isAdmin);
-    return isAdmin["isAdmin"];
+    try {
+      const isAdmin = await User.findOne(
+        { _id: uid },
+        { isAdmin: 1, _id: 0 },
+      ).lean();
+      // console.log("[ userIsAdmin ] ", isAdmin);
+      return isAdmin["isAdmin"];
+    } catch {
+      return null;
+    }
   },
 
   async isLastAdmin() {
