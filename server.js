@@ -99,6 +99,7 @@ const init = async () => {
   server.route({
     method: "GET",
     path: "/css/{file}.css",
+    options: { auth: false },
     handler: async (request, h) => {
       const file = request.params.file;
       if (!/^[a-z0-9-]+$/i.test(file)) {
@@ -118,6 +119,7 @@ const init = async () => {
   server.route({
     method: "GET",
     path: "/src/views/partials/svg/{file}",
+    options: { auth: false },
     handler: async (request, h) => {
       const file = request.params.file;
       if (!/^[a-z0-9.-]+$/i.test(file)) {
