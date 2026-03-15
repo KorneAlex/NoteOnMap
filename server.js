@@ -10,6 +10,7 @@ import fs from "fs";
 
 // my modules
 import { routes } from "./routes.js";
+import { apiRoutes } from "./api-routes.js"
 import { db } from "./src/models/db.js";
 
 dotenv.config();
@@ -34,7 +35,7 @@ await db.init();
 //server
 const init = async () => {
   const server = Hapi.server({
-    port: 3000,
+    port: process.env.PORT || 3000,
     host: process.env.HOST || "localhost",
     routes: {
       files: {
@@ -92,11 +93,13 @@ const init = async () => {
   server.auth.default("session");
 
   server.route(routes);
+  server.route(apiRoutes);
 
   // added by AI during CSS refactoring
   server.route({
     method: "GET",
     path: "/css/{file}.css",
+    options: { auth: false },
     handler: async (request, h) => {
       const file = request.params.file;
       if (!/^[a-z0-9-]+$/i.test(file)) {
@@ -116,6 +119,7 @@ const init = async () => {
   server.route({
     method: "GET",
     path: "/src/views/partials/svg/{file}",
+    options: { auth: false },
     handler: async (request, h) => {
       const file = request.params.file;
       if (!/^[a-z0-9.-]+$/i.test(file)) {

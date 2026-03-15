@@ -1,17 +1,29 @@
-{{!-- TODO: make navbar usable on smaller screens (tablet/mobile...) --}}
-<nav class="navbar" role="navigation" aria-label="main navigation" style="z-index: 99;">
+<nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
       {{> svg/logo}}
+    </a>
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
     </a>
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
+      <a href="/" class="navbar-item">
+        {{> svg/logo-text}}
+      </a>
       {{#if viewData.isAuthenticated}}
       <a href="/dashboard" class="navbar-item">
         Dashboard
       </a>
+      {{#if viewData.userIsAdmin }}
+      <a href="/users" class="navbar-item">
+        Users
+      </a>
+      {{/if}}
       {{/if}}
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">

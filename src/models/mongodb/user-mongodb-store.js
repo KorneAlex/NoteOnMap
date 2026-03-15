@@ -2,7 +2,7 @@ import { User } from "./db.js";
 import { signupSchema } from "../joi-schema.js";
 
 export const usersStore = {
-  // Getters  ==================================================================================================================================
+  // Get      ==================================================================================================================================
 
   async getAllUsers() {
     return User.find().lean();
@@ -41,7 +41,7 @@ export const usersStore = {
     return user.map_api_key;
   },
 
-  // Add      ==================================================================================================================================
+  // Create   ==================================================================================================================================
   async addUser(userData) {
     const { error, value } = signupSchema.validate(userData);
     if (error) {
@@ -66,15 +66,36 @@ export const usersStore = {
     await User.updateOne({ _id: userId }, { map_api_key: key });
     return await this.getUserById(userId);
   },
+
+  // Update   ==================================================================================================================================
+
+  updateUserById: async (uid, user) => {
+    if (!uid || !user) return null;
+    if (typeof uid !== "string") {
+      uid = uid.toString();
+    }
+    let updateData;
+    try {
+      updateData = typeof user === "string" ? JSON.parse(user) : user; // AI help
+    } catch (err){
+      console.log(err);
+      return null;
+    }
+    delete updateData._id;
+    const res = await User.updateOne({ _id: uid }, { $set: updateData });
+    console.log("updated:", res);
+    return res;
+  },
+
   // Delete   ==================================================================================================================================
 
-  async deleteUserById(id) {
-    if (!id) return null;
-    if (typeof id !== "string") {
-      id = id.toString();
+  async deleteUserById(uid) {
+    if (!uid) return null;
+    if (typeof uid !== "string") {
+      uid = uid.toString();
     }
     // console.log("[ deleteUserById ] deleting user: ", id)
-    const result = await User.findOneAndDelete({ _id: id });
+    const result = await User.findOneAndDelete({ _id: uid });
     return result != null;
   },
 
@@ -95,19 +116,21 @@ export const usersStore = {
   },
 
   async userIsAdmin(uid) {
-    const isAdmin = await User.findOne(
-      { _id: uid },
-      { isAdmin: 1, _id: 0 },
-    ).lean();
-    // console.log("[ userIsAdmin ] ", isAdmin);
-    return isAdmin["isAdmin"];
+    try {
+      const isAdmin = await User.findOne(
+        { _id: uid },
+        { isAdmin: 1, _id: 0 },
+      ).lean();
+      // console.log("[ userIsAdmin ] ", isAdmin);
+      return isAdmin["isAdmin"];
+    } catch {
+      return null;
+    }
   },
 
   async isLastAdmin() {
-    const adminList = await User.find(
-      { isAdmin: true },
-    ).lean();
+    const adminList = await User.find({ isAdmin: true }).lean();
     // console.log("adminList.length", adminList.length);
-    return !! adminList.lenght == 1
+    return !!adminList.lenght == 1;
   },
 };

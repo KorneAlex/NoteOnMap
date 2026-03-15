@@ -1,9 +1,11 @@
 import { db } from "../models/db.js";
 
 export const mainController = {
-  index: (request, h) => {
+  index: async (request, h) => {
+    const userId = request.auth?.credentials?._id;
     const viewData = {
       isAuthenticated: request.auth.isAuthenticated,
+      userIsAdmin: await db.usersStore.userIsAdmin(userId),
     };
     return h.view("index", {
       title: "Home Page",
@@ -12,9 +14,11 @@ export const mainController = {
     });
   },
 
-  about: (request, h) => {
+  about: async (request, h) => {
+    const userId = request.auth?.credentials?._id;
     const viewData = {
       isAuthenticated: request.auth.isAuthenticated,
+      userIsAdmin: await db.usersStore.userIsAdmin(userId),
     };
     return h.view("./pages/about", {
       title: "About The project",

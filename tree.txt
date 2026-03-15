@@ -1,0 +1,77 @@
+.
+├── api-routes.js
+├── eslint.config.js
+├── package.json
+├── package-lock.json
+├── readme.md
+├── routes.js
+├── server.js
+├── src
+│   ├── api
+│   │   ├── noteonmap-service.js
+│   │   └── user-api.js
+│   ├── controllers
+│   │   ├── accounts-controller.js
+│   │   ├── actions-controller.js
+│   │   ├── main-controller.js
+│   │   └── test-controller.js
+│   ├── css
+│   │   ├── account-menu.css
+│   │   ├── left-pane.css
+│   │   ├── map.css
+│   │   └── variables.css
+│   ├── models
+│   │   ├── db.js
+│   │   ├── joi-schema.js
+│   │   └── mongodb
+│   │       ├── db.js
+│   │       ├── points-mongodb-store.js
+│   │       └── user-mongodb-store.js
+│   └── views
+│       ├── index.hbs
+│       ├── layouts
+│       │   └── layout.hbs
+│       ├── pages
+│       │   ├── about.hbs
+│       │   ├── account.hbs
+│       │   ├── dashboard.hbs
+│       │   ├── login.hbs
+│       │   ├── point.hbs
+│       │   ├── signup.hbs
+│       │   ├── test.hbs
+│       │   ├── user.hbs
+│       │   └── users.hbs
+│       └── partials
+│           ├── forms
+│           │   ├── add-api-form.hbs
+│           │   ├── add-point-form.hbs
+│           │   └── login-form.hbs
+│           ├── interface
+│           │   ├── account-menu.hbs
+│           │   ├── footer.hbs
+│           │   ├── header.hbs
+│           │   └── left-pane.hbs
+│           ├── lists
+│           │   ├── list-points.hbs
+│           │   └── list-users.hbs
+│           ├── map
+│           │   ├── map.hbs
+│           │   └── tst.hbs
+│           ├── svg
+│           │   ├── delete.hbs
+│           │   ├── logo.hbs
+│           │   ├── logo-text.hbs
+│           │   ├── point.hbs
+│           │   ├── point_old.png
+│           │   ├── point.png
+│           │   └── user-icon.hbs
+│           └── warnings
+│               └── api-key-warning.hbs
+├── test
+│   ├── api-tests.js
+│   ├── data-for-tests.js
+│   ├── mongodb-tests.js
+│   └── test.js
+└── tree.txt
+
+18 directories, 57 files

@@ -56,11 +56,11 @@
 
 <script>
 (function () {
-  var wrapper = document.getElementById('left-pane-wrapper');
-  var pane = document.querySelector('.left-pane');
-  var logoTrigger = document.querySelector('[data-left-pane-toggle]');
-  var dropdownTrigger = pane && pane.querySelector('[data-dropdown-trigger]');
-  var dropdownMenu = dropdownTrigger && pane.querySelector('#' + (dropdownTrigger.getAttribute('aria-controls') || ''));
+  let wrapper = document.getElementById('left-pane-wrapper');
+  let pane = document.querySelector('.left-pane');
+  let logoTrigger = document.querySelector('[data-left-pane-toggle]');
+  let dropdownTrigger = pane && pane.querySelector('[data-dropdown-trigger]');
+  let dropdownMenu = dropdownTrigger && pane.querySelector('#' + (dropdownTrigger.getAttribute('aria-controls') || ''));
 
   if (!wrapper || !pane || !logoTrigger) return;
 

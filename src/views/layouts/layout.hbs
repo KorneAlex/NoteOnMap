@@ -2,24 +2,42 @@
 <html lang="en-IE">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title}}</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
   <link href='https://cdn.maptiler.com/maptiler-sdk-js/v3.10.2/maptiler-sdk.css' rel='stylesheet' />
   <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/left-pane.css">
   <link rel="stylesheet" href="/css/account-menu.css">
   <link rel="stylesheet" href="/css/map.css">
+  <link rel="stylesheet" href="/css/home.css">
 </head>
 
-<body>
+<body class="{{#if isDashboard}}page-dashboard{{else}}page-default{{/if}}">
   {{#if isDashboard}}
   {{{content}}}
   {{else}}
-  <div class="is-flex is-flex-direction-column p-0" style="margin-left: 15%; margin-right: 15%; min-height: 100vh;">
-  {{> interface/header }}
-  {{{content}}}
-  {{> interface/footer }}
+  <div class="page-wrapper">
+    {{> interface/header }}
+    <main class="page-main">
+      {{{content}}}
+    </main>
+    {{> interface/footer }}
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let burger = document.querySelector('.navbar-burger');
+      let menu = document.getElementById('navbarBasicExample');
+      if (burger && menu) {
+        burger.addEventListener('click', function () {
+          burger.classList.toggle('is-active');
+          menu.classList.toggle('is-active');
+        });
+      }
+    });
+  </script>
   {{/if}}
 </body>
 </html>

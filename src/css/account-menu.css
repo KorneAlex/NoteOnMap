@@ -43,6 +43,15 @@
   pointer-events: none;
 }
 
+/* When burger menu is visible (small screens), shift account button left — only when not dashboard */
+@media screen and (max-width: 1023px) {
+  body:not(.page-dashboard) .account-menu-wrapper,
+  body:not(.page-dashboard) .account-icon,
+  body:not(.page-dashboard) .account-icon-bg {
+    right: 4rem;
+  }
+}
+
 /* users list (from the previous project) */
 
 .centered__table table {

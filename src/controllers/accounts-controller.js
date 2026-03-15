@@ -10,7 +10,7 @@ export const accountController = {
         isAuthenticated: request.auth.isAuthenticated,
       };
       if (request.auth.isAuthenticated) {
-        return h.redirect("/dashboard");
+        return h.redirect("/");
       }
       return h.view("./pages/signup", {
         title: "signup Page",
@@ -58,7 +58,7 @@ export const accountController = {
       };
 
       if (request.auth.isAuthenticated) {
-        return h.redirect("/dashboard");
+        return h.redirect("/");
       }
       return h.view("./pages/login", {
         title: "Login Page",
@@ -83,7 +83,7 @@ export const accountController = {
         });
       }
       request.cookieAuth.set({ id: user._id });
-      return h.redirect("/dashboard");
+      return h.redirect("/");
     },
   },
 

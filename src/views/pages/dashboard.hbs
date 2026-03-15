@@ -3,8 +3,6 @@
   <section style="z-index: 0;">
     {{#if viewData.mapsApiKey }}
     {{> map/map }}
-    {{!-- {{> map/tst }} --}}
-    {{!-- {{> map/add-point }} --}}
     {{else}}
       {{> warnings/api-key-warning }}
     {{/if}}
