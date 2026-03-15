@@ -2,15 +2,16 @@ import mongoose from "mongoose";
 
 export async function connect() {
   try {
-
     await mongoose.connect(process.env.MONGO_URL, {
       serverSelectionTimeoutMS: 5000,
     });
-  } catch {
-    console.log("No connection to the database");
+    console.log("MongoDB connected");
+  } catch (err) {
+    console.error("MongoDB connection failed:", err.message);
   }
-  // TODO: make the app to load if there is no connection to DB displaying the error message on the page
 }
+  // TODO: make the app to load if there is no connection to DB displaying the error message on the page
+
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
