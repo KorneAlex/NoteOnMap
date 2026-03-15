@@ -6,8 +6,10 @@ export async function connect() {
       serverSelectionTimeoutMS: 5000,
     });
     console.log("MongoDB connected");
+    return true;
   } catch (err) {
     console.error("MongoDB connection failed:", err.message);
+    return false;
   }
 }
   // TODO: make the app to load if there is no connection to DB displaying the error message on the page

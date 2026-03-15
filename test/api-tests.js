@@ -18,7 +18,26 @@ M.suite("API Service test", () => {
       assert.isDefined(newUser._id);
     });
 
-    M.it("2. Delete a user", async () => {
+    M.it("2. Find user", async () => {
+      const newUser = await noteOnMapService.createUser(td[0].testUser);
+      assert.isNotNull(newUser._id);
+      const getUser = await noteOnMapService.getUserById(newUser._id.toString());
+      console.log(getUser);
+      assert.equal(td[0].testUser.name, getUser.name);
+      assert.equal(td[0].testUser.email, getUser.email);
+    });
+
+    M.it("3. Update user", async () => {
+      const newUser = await noteOnMapService.createUser(td[0].testUser);
+      assert.isNotNull(newUser._id);
+      const payload = td[0].testUserUpdate;
+      await noteOnMapService.updateUserById(newUser._id.toString(), payload);
+      const checkUser = await db.usersStore.getUserById(newUser._id.toString());
+      assert.equal(checkUser.password, payload.password);
+      assert.equal(checkUser.passwordRepeat, payload.passwordRepeat);
+    });
+
+    M.it("4. Delete user", async () => {
       const newUser = await noteOnMapService.createUser(td[0].testUser);
       assert.isNotNull(newUser._id);
       await noteOnMapService.deleteUserById(newUser._id.toString());

@@ -6,7 +6,10 @@ export const db = {
   usersStore: null,
 
   async init() {
-    await connect();
+    let res = false;
+    while (!res) {
+      res = await connect();
+    }
     this.usersStore = usersStore;
     this.pointsStore = pointsStore;
   },

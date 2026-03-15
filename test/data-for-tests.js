@@ -6,6 +6,11 @@ export const testData = [{
       password: "123123",
       passwordRepeat: "123123",
     },
+
+    testUserUpdate:  {
+      "username": "DevTest",
+      "password": "321321"
+    },
     
     testUserWrong1: {
       username: "!£$%^&*(",
