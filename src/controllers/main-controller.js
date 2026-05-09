@@ -159,5 +159,24 @@ export const mainController = {
         userData: await db.usersStore.getUserDataById(request.query.userid),
       };
       return h.view("./pages/user", { title: "Users", viewData: viewData });
-    }
+    },
+
+    myPoints: async (request, h) => {
+      const userId = request.auth?.credentials?._id;
+      const points = await db.pointsStore.getAllPointsForUserId(
+        userId.toString(),
+      );
+      const viewData = {
+        isAuthenticated: request.auth.isAuthenticated,
+        userId,
+        userIsAdmin: await db.usersStore.userIsAdmin(userId),
+        pointsJson: JSON.stringify(points),
+        points: points,
+      };
+      return h.view("./pages/my-points", {
+        title: "My Points",
+        isMyPoints: true,
+        viewData: viewData,
+      });
+    },
 };
