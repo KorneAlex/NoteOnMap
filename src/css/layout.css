@@ -29,6 +29,8 @@
 /* Navbar: ensure it stays on top and works on mobile */
 .navbar {
   z-index: 99;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .navbar-brand .navbar-item svg {

@@ -1,10 +1,19 @@
 // db_flow_3: uses the initialized stores in controller functions
 import { db } from "../models/db.js";
 import { signupSchema } from "../models/joi-schema.js";
+import {
+  jwtAccessCookieAttrs,
+  clearJwtAccessCookie,
+  jwtRefreshCookieAttrs,
+  clearJwtRefreshCookie,
+  signAccessTokenForUser,
+  signRefreshTokenForUser,
+  clearSessionCookie,
+} from "../lib/hapi-auth.js";
 
 export const accountController = {
   signup: {
-    auth: { mode: "try" },
+    auth: { strategy: "jwt", mode: "try" },
     handler: (request, h) => {
       const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
@@ -36,7 +45,6 @@ export const accountController = {
     },
     handler: async (request, h) => {
       const {payload} = request;
-
       const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
         infoMessage: "Signup successful! Please log in.",
@@ -51,12 +59,11 @@ export const accountController = {
   },
 
   login: {
-    auth: { mode: "try" },
+    auth: { strategy: "jwt", mode: "try" },
     handler: (request, h) => {
       const viewData = {
         isAuthenticated: request.auth.isAuthenticated,
       };
-
       if (request.auth.isAuthenticated) {
         return h.redirect("/");
       }
@@ -82,15 +89,27 @@ export const accountController = {
           },
         });
       }
-      request.cookieAuth.set({ id: user._id });
-      return h.redirect("/");
+      try {
+      request.cookieAuth.set({ id: user._id.toString() });
+      } catch (err) {
+        // console.error("Error setting cookie:", err);
+      }
+      try {
+        const token = signAccessTokenForUser(user);
+        const refreshToken = signRefreshTokenForUser(user);
+        return h
+          .redirect("/")
+          .header("Set-Cookie", [jwtAccessCookieAttrs(token), jwtRefreshCookieAttrs(refreshToken)]);
+      } catch (err) {
+        console.error("Error signing tokens:", err);
+        return h.redirect("/");
+      }
     },
   },
 
   logout: {
     handler: (request, h) => {
-      request.cookieAuth.clear();
-      return h.redirect("/");
+      return h.redirect("/").header("Set-Cookie", [clearJwtAccessCookie(), clearJwtRefreshCookie(), clearSessionCookie()]);
     },
   },
 };
