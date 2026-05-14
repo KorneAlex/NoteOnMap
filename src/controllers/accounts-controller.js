@@ -4,7 +4,7 @@ import { signupSchema } from "../models/joi-schema.js";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const jwt = require("jsonwebtoken");
-import { jwtAccessCookieAttrs, clearJwtAccessCookie } from "../lib/hapi-auth.js";
+import { jwtAccessCookieAttrs, clearJwtAccessCookie, jwtRefreshCookieAttrs , clearJwtRefreshCookie} from "../lib/hapi-auth.js";
 
 export const accountController = {
   signup: {
@@ -94,11 +94,19 @@ export const accountController = {
             admin: !!user.isAdmin,
           },
           process.env.JWT_SECRET,
-          { expiresIn: "15m" },
+          { expiresIn: "20s" },
         );
+        const refreshToken = jwt.sign(
+          {
+            id: user._id.toString(),
+            admin: !!user.isAdmin,
+          },
+          process.env.JWT_REFRESH_SECRET,
+          { expiresIn: "7d" },
+        );  
         return h
           .redirect("/")
-          .header("Set-Cookie", [jwtAccessCookieAttrs(token)]);
+          .header("Set-Cookie", [jwtAccessCookieAttrs(token), jwtRefreshCookieAttrs(refreshToken)]);
       } catch (err) {
         return h.redirect("/");
       }
@@ -108,7 +116,7 @@ export const accountController = {
   logout: {
     handler: (request, h) => {
       request.cookieAuth.clear();
-      return h.redirect("/").header("Set-Cookie", clearJwtAccessCookie());
+      return h.redirect("/").header("Set-Cookie", [clearJwtAccessCookie(), clearJwtRefreshCookie()]);
     },
   },
 };

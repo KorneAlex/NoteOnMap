@@ -7,11 +7,24 @@
 import { db } from "../models/db.js";
 import { serialize } from "cookie";
 
-const jwtCookieName = () => process.env.JWT_COOKIE_NAME || "access_token";
+// COOKIES!
+const jwtAccessCookieName = () => process.env.JWT_ACCESS_COOKIE_NAME || "access_token";
+const jwtRefreshCookieName = () => process.env.JWT_REFRESH_COOKIE_NAME || "refresh_token";
 
 export function jwtAccessCookieAttrs(token) {
   const maxAge = 15 * 60;
-  return serialize(jwtCookieName(), token, {
+  return serialize(jwtAccessCookieName(), token, {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge,
+    secure: process.env.NODE_ENV === "production",
+  });
+}
+
+export function jwtRefreshCookieAttrs(token) {
+  const maxAge = 60 * 60 * 24 * 7;
+  return serialize(jwtRefreshCookieName(), token, {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
@@ -21,7 +34,7 @@ export function jwtAccessCookieAttrs(token) {
 }
 
 export function clearJwtAccessCookie() {
-  return serialize(jwtCookieName(), "", {
+  return serialize(jwtAccessCookieName(), "", {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
@@ -30,7 +43,18 @@ export function clearJwtAccessCookie() {
   });
 }
 
+export function clearJwtRefreshCookie() {
+  console.log("Clearing refresh token cookie", jwtRefreshCookieName());
+  return serialize(jwtRefreshCookieName(), "", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 0,
+    secure: process.env.NODE_ENV === "production",
+  });
+}
 
+// Configure Hapi authentication strategies
 export async function configureSessionAuth(server) {
   const cookieName = process.env.cookie_name;
   const cookiePassword = process.env.cookie_password;
